@@ -1,0 +1,74 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    /*background*/
+    background: var(--bg-color);
+
+    /*font*/
+    font-family: "Source Han Sans CN (Pseudo-SC)", "Source Han Sans CN", sans-serif;
+}
+
+:root {
+    /*--primary-color: #F4F4F2;*/
+    --background-color: #F2F2F7;
+    --dark-color: #1C1C1E;
+    --input-color: #D9D9D9;
+    --main-font: "Source Han Sans CN (Pseudo-SC)", "Source Han Sans CN", sans-serif;
+
+    /* 数字健康色系 */
+    --digital_health-color-1: #059669;
+    --digital_health-color-2: #10B981;
+    --digital_health-color-3: #34D399;
+    --digital_health-color-4: #6EE7B7;
+    --digital_health-color-5: #ECFDF5;
+
+    --bio_health-color-1: #10B981;
+    --bio_health-color-2: #059669;
+    --bio_health-color-3: #34D399;
+    --bio_health-color-4: #ECFDF5;
+    --bio_health-color-5: #064E3B;
+
+    /* 医疗蓝色系 */
+    --medical_cyan-color-1: #0EA5E9;
+    --medical_cyan-color-2: #F0F9FF;
+    --medical_cyan-color-3: #FFFFFF;
+    --medical_cyan-color-4: #334155;
+
+
+    /* 主色系 */
+    --primary-color: #0EA5E9;          /* 医疗蓝（主操作） */
+    --primary-hover-color: #1F5BB5;
+    --primary-active-color: #174A9C;
+
+    /* 辅助色 */
+    --secondary-color: #0284C7;        /* 次蓝色 */
+    --success-color: #2FA84F;          /* 成功 / 正常 */
+    --warning-color: #F0A020;          /* 提示 / 注意 */
+    --danger-color: #D93C3C;           /* 警告 / 错误 */
+
+    /* 背景色 */
+    --bg-color: #F0F9FF;               /* 页面背景 */
+    --card-bg-color: #FFFFFF;          /* 卡片背景 */
+    --header-bg-color: #FFFFFF;
+
+    /* 字体颜色 */
+    /*--text-primary-color: #1C1C1E;     !* 主文本 *!*/
+    --text-primary-color: #334155;     /* 主文本 */
+    --text-primary-deep-color: #181f27; /* 深色主文本 */
+    --text-primary-white-color: #FFFFFF; /* 反白主文本 */
+    --text-regular-color: #4A4A4A;     /* 普通文本 */
+    --text-secondary-color: #8A8A8A;   /* 辅助文字 */
+    --text-placeholder-color: #B0B0B0;
+
+    /* 边框 / 分割线 */
+    --border-color: #E1E4EA;
+    --divider-color: #EBEEF5;
+
+    /* 状态色背景（很适合表格/提示） */
+    --success-bg-color: #EAF7EE;
+    --warning-bg-color: #FFF4E5;
+    --danger-bg-color: #FDECEC;
+}
