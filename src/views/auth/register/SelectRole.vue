@@ -5,14 +5,6 @@ const emit = defineEmits(['back', 'next'])
 
 // 默认选择患者
 const role = ref('patient')
-
-function handleBack() {
-  emit('back')
-}
-
-function handleNext() {
-  emit('next', role.value)
-}
 </script>
 
 <template>
@@ -34,11 +26,11 @@ function handleNext() {
 
       <!-- 按钮区 -->
       <div class="action-row">
-        <el-button @click="handleBack" class="btn-prev btn">
+        <el-button @click="emit('back')" class="btn-prev btn">
           返回
         </el-button>
 
-        <el-button type="primary" @click="handleNext" class="btn-next btn">
+        <el-button type="primary" @click="emit('next', role)" class="btn-next btn">
           下一步
         </el-button>
       </div>

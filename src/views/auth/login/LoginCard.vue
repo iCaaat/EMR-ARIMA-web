@@ -1,17 +1,15 @@
-<script>
+<script setup>
+import { useRouter } from 'vue-router'
+
 import userIcon from '@/assets/icons/login_and_register/user_icon.svg';
 import passwordIcon from '@/assets/icons/login_and_register/user_passwd_icon.svg';
 import lineIcon from '@/assets/icons/login_and_register/line.svg';
 
-export default {
-  name: 'LoginCard',
-  data() {
-    return {
-      userIcon,
-      passwordIcon,
-      lineIcon,
-    };
-  },
+const router = useRouter();
+// TODO: 提交登录信息
+function handleSubmitLogin() {
+
+  router.push('/');
 }
 </script>
 
@@ -39,7 +37,7 @@ export default {
     </div>
 
     <div class="login-button">
-      <button class="login-btn">登录</button>
+      <button class="login-btn" @click="handleSubmitLogin">登录</button>
     </div>
 
     <div class="create-account">
@@ -112,7 +110,7 @@ export default {
   width: 330px;
   height: 47px;
   align-items: center;
-  gap: 18px;
+  gap: 13px;
   flex-shrink: 0;
 }
 

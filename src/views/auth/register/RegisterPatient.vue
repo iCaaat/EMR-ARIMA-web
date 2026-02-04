@@ -1,102 +1,200 @@
-<script>
+<script setup>
+import { reactive } from "vue";
+
 import emailIcon from "@/assets/icons/login_and_register/email_icon.svg";
 import lineIcon from "@/assets/icons/login_and_register/line.svg";
 import passwordIcon from "@/assets/icons/login_and_register/user_passwd_icon.svg";
 import userIcon from "@/assets/icons/login_and_register/user_icon.svg";
 
-export default {
-  name: 'RegisterCard',
-  data() {
-    return {
-      // icons
-      emailIcon,
-      passwordIcon,
-      lineIcon,
-      userIcon,
-      // data
-      registerForm: {
-        userName: '',
-        userEmail: '',
-        userPasswd: '',
-        confirmPasswd: ''
-      }
-    };
-  },
-  methods: {
-    submitRegister() {
-      if (!this.registerForm.userName || !this.registerForm.userEmail
-          || !this.registerForm.userPasswd || !this.registerForm.confirmPasswd) {
-        alert("请填写所有字段。");
-        return;
-      }
-      if (this.registerForm.userName.length < 2 || this.registerForm.userName.length > 20) {
-        alert("用户名长度必须在3到20个字符之间。");
-        return;
-      }
-      if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(this.registerForm.userEmail)) {
-        alert("请输入有效的邮箱地址。");
-        return;
-      }
-      if (this.registerForm.userPasswd.length < 6 || this.registerForm.userPasswd.length > 20) {
-        alert("密码长度必须在6到20个字符之间。");
-        return;
-      }
-      if (this.registerForm.confirmPasswd !== this.registerForm.userPasswd) {
-        alert("两次输入的密码不一致，请重新输入。");
-      }
-    }
-  }
-}
+const emit = defineEmits(['back', 'next']);
+const registerForm = reactive({
+  realName: '',
+  idCard: '',
+  gender: '',
+  birthday: '',
+  phone: '',
+  email: '',
+  address: '',
+  nationality: '',
+  occupation: '',
+  maritalStatus: '',
+  emergencyContact: '',
+  emergencyPhone: '',
+  insuranceNumber: ''
+})
+const registerFormRules = reactive({
+  realName: [
+    { required: true, message: '请输入真实姓名', trigger: 'blur' },
+    { min: 2, max: 50, message: '姓名长度应在2到50个字符之间', trigger: 'blur' }
+  ],
+  idCard: [
+    { required: true, message: '请输入身份证号', trigger: 'blur' },
+    { pattern: /^[1-9]\d{5}(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}[\dXx]$/, message: '请输入有效的身份证号', trigger: 'blur' }
+  ],
+  gender: [
+    { required: true, message: '请选择性别', trigger: 'change' }
+  ],
+  birthday: [
+    { required: true, message: '请选择出生日期', trigger: 'change' }
+  ],
+  phone: [
+    { required: true, message: '请输入手机号', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '请输入有效的11位手机号', trigger: 'blur' }
+  ],
+  email: [
+    { required: false, message: '请输入邮箱', trigger: 'blur' },
+    { pattern: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/, message: '请输入有效的邮箱地址', trigger: 'blur' }
+  ],
+  address: [],
+  nationality: [],
+  occupation: [],
+  maritalStatus: [],
+  emergencyContact: [],
+  emergencyPhone: [],
+  insuranceNumber: []
+})
 </script>
 
 <template>
   <div class="register-card">
-    <h2 class="card-title">注册</h2>
-    <div class="register-form">
-      <div class="input-group">
-        <img :src="userIcon" alt="email-icon" class="input-icon">
-        <img :src="lineIcon" alt="line-icon" class="input-line">
-        <input v-model="registerForm.userName" type="text" class="register-input" placeholder="请输入您的用户名">
-      </div>
-    </div>
-    <div class="register-form form2">
-      <div class="input-group">
-        <img :src="emailIcon" alt="email-icon" class="input-icon">
-        <img :src="lineIcon" alt="line-icon" class="input-line">
-        <input v-model="registerForm.userEmail" type="text" class="register-input" placeholder="请输入您的邮箱">
-      </div>
-    </div>
-    <div class="register-form form2">
-      <div class="input-group">
-        <img :src="passwordIcon" alt="email-icon" class="input-icon">
-        <img :src="lineIcon" alt="line-icon" class="input-line">
-        <input v-model="registerForm.userPasswd" type="text" class="register-input" placeholder="请输入您的密码">
-      </div>
-    </div>
-    <div class="register-form form2">
-      <div class="input-group">
-        <img :src="passwordIcon" alt="email-icon" class="input-icon">
-        <img :src="lineIcon" alt="line-icon" class="input-line">
-        <input v-model="registerForm.confirmPasswd" type="text" class="register-input" placeholder="请确认您的密码">
-      </div>
-    </div>
+    <!-- 标题 -->
+    <h2 class="card-title">2.其他信息</h2>
 
-    <div class="register-button">
-      <button class="register-btn" @click="submitRegister">注册</button>
-    </div>
+    <!-- 表单区 -->
+    <el-form
+        :model="registerForm"
+        :rules="registerFormRules"
+        label-width="100px"
+        label-position="right"
+        class="register-form">
+      <el-row :gutter="24">
+        <!-- 真实姓名 -->
+        <el-col :span="12">
+          <el-form-item label="真实姓名" prop="realName">
+            <el-input v-model="registerForm.realName" placeholder="姓名" />
+          </el-form-item>
+        </el-col>
 
-    <div class="create-account">
-      <span>已有账号？</span>
-      <router-link to="/login" class="register-link">登录</router-link>
+        <!-- 身份证号 -->
+        <el-col :span="12">
+          <el-form-item label="身份证号" prop="idCard">
+            <el-input v-model="registerForm.idCard" placeholder="身份证号" />
+          </el-form-item>
+        </el-col>
+
+        <!-- 性别 -->
+        <el-col :span="12">
+          <el-form-item label="性别" prop="gender">
+            <el-radio-group v-model="registerForm.gender">
+              <el-radio value="M" size="default">男</el-radio>
+              <el-radio value="F" size="default">女</el-radio>
+              <el-radio value="O" size="default">其他</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+
+        <!-- 出生日期 -->
+        <el-col :span="12">
+          <el-form-item label="出生日期" prop="birthday">
+            <el-date-picker
+                v-model="registerForm.birthday"
+                type="date"
+                placeholder="选择出生日期"
+                :size="'default'"
+            />
+          </el-form-item>
+        </el-col>
+
+        <!-- 手机号 -->
+        <el-col :span="12">
+          <el-form-item label="手机号" prop="phone">
+            <el-input v-model="registerForm.phone" placeholder="11位手机号" />
+          </el-form-item>
+        </el-col>
+
+        <!-- 邮箱 -->
+        <el-col :span="12">
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="registerForm.email" placeholder="邮箱" />
+          </el-form-item>
+        </el-col>
+
+        <!-- 家庭住址（占满一行） -->
+        <el-col :span="24">
+          <el-form-item label="家庭住址">
+            <el-input v-model="registerForm.address" placeholder="住址"/>
+          </el-form-item>
+        </el-col>
+
+        <!-- 民族 -->
+        <el-col :span="12">
+          <el-form-item label="民族">
+            <el-input v-model="registerForm.nationality" placeholder="民族"/>
+          </el-form-item>
+        </el-col>
+
+        <!-- 职业 -->
+        <el-col :span="12">
+          <el-form-item label="职业">
+            <el-input v-model="registerForm.occupation" placeholder="职业"/>
+          </el-form-item>
+        </el-col>
+
+        <!-- 婚姻状态（占满） -->
+        <el-col :span="24">
+          <el-form-item label="婚姻状态">
+            <el-radio-group v-model="registerForm.maritalStatus">
+              <el-radio value="0" size="default">未婚</el-radio>
+              <el-radio value="1" size="default">已婚</el-radio>
+              <el-radio value="2" size="default">丧偶</el-radio>
+              <el-radio value="3" size="default">离异</el-radio>
+              <el-radio value="9" size="default">其他</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+
+        <!-- 紧急联系人 -->
+        <el-col :span="12">
+          <el-form-item label="紧急联系人">
+            <el-input v-model="registerForm.emergencyContact" placeholder="联系人姓名"/>
+          </el-form-item>
+        </el-col>
+
+        <!-- 紧急联系电话 -->
+        <el-col :span="12">
+          <el-form-item label="紧急联系电话">
+            <el-input v-model="registerForm.emergencyPhone" placeholder="联系人电话" />
+          </el-form-item>
+        </el-col>
+
+        <!-- 医疗保险号（占满） -->
+        <el-col :span="24">
+          <el-form-item label="医疗保险号">
+            <el-input v-model="registerForm.insuranceNumber" placeholder="医疗保险号码"/>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+
+    <!-- 按钮区 -->
+    <div class="action-row">
+      <el-button @click="emit('back')" class="btn-prev btn">
+        上一步
+      </el-button>
+
+      <el-button type="primary" @click="emit('next', registerForm)" class="btn-next btn">
+        提交注册
+      </el-button>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* 顶层卡片 */
 .register-card {
   /* layout */
-  width: 424px;
-  height: 531px;
+  width: 860px;
+  height: 700px;
   flex-shrink: 0;
   position: relative;
   top: 120px;
@@ -112,6 +210,7 @@ export default {
   box-shadow: 1px 2px 12.3px rgba(0, 0, 0, 0.25);
 }
 
+/* 卡片标题 */
 .card-title {
   /* layout */
   width: 191px;
@@ -126,136 +225,45 @@ export default {
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  margin-top: 15%;
+  margin-top: 6%;
 }
 
+/* 表单区 */
 .register-form {
-  /* layout */
-  width: 78%;
-  height: 48px;
-
-  /* style */
-  background-color: var(--input-color);
-  border-radius: 8px; /* 可选：让背景圆角 */
-
-  /* flex */
-  display: flex;  /* 使用 flex 排列元素 */
-  align-items: center;      /* 垂直居中 */
-  flex-direction: column;
-
+  width: 80%;
 }
 
-.form2 {
-  margin-top: 19px;
-}
-
-.input-group {
-  display: flex;
-  width: 330px;
-  height: 47px;
-  align-items: center;
-  gap: 18px;
-  flex-shrink: 0;
-}
-
-.input-icon {
-  width: 20px;
-  margin-left: 13px;
-  flex-shrink: 0;
-  padding: 0;
-}
-
-.input-line {
-  width: 1px;
-  height: 23px;
-}
-
-.register-input {
-  border: none;
-  display: flex;
-  width: 212px;
-  height: 35px;
-  flex-direction: column;
-  justify-content: center;
-  flex-shrink: 0;
-
-  margin-left: 10px;
-  flex-grow: 1;  /* 让输入框填充剩余空间 */
-  background-color: var(--input-color);  /* 设置输入框背景颜色 */
-  font-family: inherit;  /* 继承父组件字体 */
-  border: 0;
-  outline: none;
+.register-form :deep(.el-input__wrapper) {
+  --el-input-bg-color: var(--bg-color);
+  border-radius: 6px;
 }
 
 input:focus {
   border: 1px;
 }
 
-.forget-password {
-  margin-top: 10px;
-
-  color: #005EB5;
-  text-align: center;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  letter-spacing: 2.52px;
-}
-
-.forget-link {
-  text-decoration: none;
-}
-
-.register-button {
+/* 按钮区 */
+.action-row {
+  padding: 32px 60px;
   display: flex;
-  width: 176px;
-  height: 46px;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 30px;
-
-
-  border-radius: 8px;
-  background: var(--dark-color, #242426);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 看起来有立体阴影 */
+  justify-content: space-between;
 }
 
-.register-button:hover {
-  background-color: black;
-}
-
-.register-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  color: var(--primary-color, #F4F4F2);
-  width: 100%;
-  height: 100%;
-
-  outline: none;
-  text-align: center;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+.btn {
   letter-spacing: 3.6px;
-  cursor: pointer;
 }
 
-.create-account {
-  margin-top: 20px;
-
-  opacity: 0.65;
-  color: #000;
-  text-align: center;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  letter-spacing: 2.52px;
+.btn-prev {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
+.btn-next {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 看起来有立体阴影 */
+  border-radius: 8px;
+
+  --el-button-hover-bg-color: var(--primary-hover-color);
+  --el-button-hover-border-color: var(--primary-hover-color);
+  --el-button-bg-color: var(--primary-color);
+  --el-button-border-color: var(--primary-color);
+}
 </style>
