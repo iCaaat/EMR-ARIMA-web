@@ -39,26 +39,28 @@ html, body {
 
 
     /* 主色系 */
-    --primary-color: #0EA5E9;          /* 医疗蓝（主操作） */
+    --primary-color: #00B2D6;          /* 医疗蓝（主操作） */
     --primary-hover-color: #1F5BB5;
     --primary-active-color: #174A9C;
 
     /* 辅助色 */
-    --secondary-color: #0284C7;        /* 次蓝色 */
+    --secondary-color: #0073E6;        /* 次蓝色 */
     --success-color: #2FA84F;          /* 成功 / 正常 */
     --warning-color: #F0A020;          /* 提示 / 注意 */
     --danger-color: #D93C3C;           /* 警告 / 错误 */
 
     /* 背景色 */
-    --bg-color: #F0F9FF;               /* 页面背景 */
+    --bg-color: #f8fafc;               /* 页面背景 */
     --card-bg-color: #FFFFFF;          /* 卡片背景 */
     --header-bg-color: #FFFFFF;
 
     /* 字体颜色 */
     /*--text-primary-color: #1C1C1E;     !* 主文本 *!*/
-    --text-primary-color: #334155;     /* 主文本 */
+    --text-primary-color: #2C3E50;     /* 主文本 */
     --text-primary-deep-color: #181f27; /* 深色主文本 */
     --text-primary-white-color: #FFFFFF; /* 反白主文本 */
+    --text-primary-deep-blue-color: #0284C7;
+    --text-primary-blue-color: #38BDF8;
     --text-regular-color: #4A4A4A;     /* 普通文本 */
     --text-secondary-color: #8A8A8A;   /* 辅助文字 */
     --text-placeholder-color: #B0B0B0;

@@ -75,7 +75,7 @@ function handleSubmitLogin() {
   flex-shrink: 0;
 
   /* style */
-  color: var(--text-primary-deep-color);
+  color: var(--text-primary-color);
   text-align: center;
   font-family: "Source Han Sans CN (Pseudo-SC)", "Source Han Sans CN", sans-serif;
   font-size: 24px;
