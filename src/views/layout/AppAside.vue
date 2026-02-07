@@ -1,10 +1,10 @@
-<script>
+<script setup>
 
 </script>
 
 <template>
 <div>
-    <h1>AppHeader</h1>
+    <h1>AppAside</h1>
 </div>
 </template>
 

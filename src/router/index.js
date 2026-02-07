@@ -7,10 +7,18 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/layout/AppLayout.vue'),
-    },
-    {
-      path: '/home',
-      redirect: '/'
+      redirect: '/home',
+      children: [
+        {
+          path: 'home',
+          name: 'RegistrationHome',
+          component: () => import('../views/registration/RegistrationHome.vue'),
+          meta: {
+            title: '首页',
+            icon: 'House'
+          }
+        }
+      ]
     },
     {
       path: '/login',

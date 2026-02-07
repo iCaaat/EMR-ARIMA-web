@@ -12,6 +12,9 @@ html, body {
 }
 
 :root {
+    /* 常用 */
+    --border-color: #E2E8F0; /* 边框颜色 * /
+
     /*--primary-color: #F4F4F2;*/
     --background-color: #F2F2F7;
     --dark-color: #1C1C1E;
@@ -66,7 +69,6 @@ html, body {
     --text-placeholder-color: #B0B0B0;
 
     /* 边框 / 分割线 */
-    --border-color: #E1E4EA;
     --divider-color: #EBEEF5;
 
     /* 状态色背景（很适合表格/提示） */
