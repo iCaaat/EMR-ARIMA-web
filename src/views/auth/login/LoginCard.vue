@@ -75,11 +75,8 @@ function handleSubmitLogin() {
   flex-shrink: 0;
 
   /* style */
-  color: var(--text-primary-color);
   text-align: center;
-  font-family: "Source Han Sans CN (Pseudo-SC)", "Source Han Sans CN", sans-serif;
   font-size: 24px;
-  font-style: normal;
   font-weight: 500;
   line-height: normal;
   margin-top: 15%;
@@ -149,8 +146,6 @@ input:focus {
 
 .forget-password {
   margin-top: 10px;
-
-  color: var(--text-secondary-color);
   text-align: center;
   font-size: 14px;
   font-style: normal;
@@ -161,6 +156,7 @@ input:focus {
 
 .forget-link {
   text-decoration: none;
+  color: var(--secondary-color)
 }
 
 .login-button {
@@ -170,8 +166,6 @@ input:focus {
   flex-direction: column;
   justify-content: center;
   margin-top: 100px;
-
-
   border-radius: 8px;
   background: var(--primary-color, #242426);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 看起来有立体阴影 */
@@ -212,6 +206,11 @@ input:focus {
   font-weight: 500;
   line-height: normal;
   letter-spacing: 2.52px;
+}
+
+.register-link {
+  text-decoration: none;
+  color: var(--secondary-color);
 }
 
 </style>
