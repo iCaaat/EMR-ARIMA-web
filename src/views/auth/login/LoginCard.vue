@@ -1,15 +1,29 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import { login } from '@/api/auth.js'
+import { reactive } from "vue";
 
 import userIcon from '@/assets/icons/login_and_register/user_icon.svg';
 import passwordIcon from '@/assets/icons/login_and_register/user_passwd_icon.svg';
 import lineIcon from '@/assets/icons/login_and_register/line.svg';
 
 const router = useRouter();
-// TODO: 提交登录信息
-function handleSubmitLogin() {
+const data = reactive({
+  username: '',
+  password: ''
+})
 
-  router.push('/');
+// TODO: 提交登录信息
+const handleSubmitLogin = async () => {
+  try {
+    const res = await login(data)
+
+    // TODO: 保存token
+
+    router.push('/')
+  } catch (err) {
+    alert(err.message || '登录失败，请重试')
+  }
 }
 </script>
 
@@ -21,14 +35,14 @@ function handleSubmitLogin() {
       <div class="input-group">
         <img :src="userIcon" alt="email-icon" class="input-icon">
         <img :src="lineIcon" alt="line-icon" class="input-line">
-        <input type="text" class="login-input" placeholder="请输入您的用户名">
+        <input v-model="data.username" type="text" class="login-input" placeholder="请输入您的用户名">
       </div>
     </div>
     <div class="login-form form2">
       <div class="input-group">
         <img :src="passwordIcon" alt="email-icon" class="input-icon">
         <img :src="lineIcon" alt="line-icon" class="input-line">
-        <input type="text" class="login-input" placeholder="请输入您的密码">
+        <input v-model="data.password" type="text" class="login-input" placeholder="请输入您的密码">
       </div>
     </div>
 

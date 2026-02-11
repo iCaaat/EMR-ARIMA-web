@@ -37,10 +37,11 @@ select {
 }
 
 :root {
-    /* 常用 */
+    /* 颜色 */
     --border-color: #E2E8F0;           /* 边框颜色 */
     --bg-color: #f8fafc;               /* 页面背景 */
     --card-bg-color: #FFFFFF;          /* 卡片背景 */
+    /* 文本颜色 */
     --text-primary-color: #2C3E50;     /* 主文本 */
     --text-primary-deep-color: #181f27; /* 深色主文本 */
     --text-secondary-deep-color: #89939d;
@@ -52,6 +53,10 @@ select {
     --primary-hover-color: #1F5BB5;
     /* 辅助色 */
     --secondary-color: #0073E6;        /* 次蓝色 */
+    /* 状态色 */
+    --status-good-color: #2FA84F;
+    --status-warning-color: #F0A020;
+    --status-danger-color: #D93C3C;
 
     /* 字体 */
     --main-font-family: "Inter", "Source Han Sans CN (Pseudo-SC)", "Source Han Sans CN", sans-serif;

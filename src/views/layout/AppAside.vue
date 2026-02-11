@@ -6,26 +6,34 @@ const textColor = '#00B2D6'
 
 <template>
 <div class="app-aside">
-    <el-menu
-        default-active="1"
-        class="el-menu-aside"
-        background-color="transparent"
-        text-color="#2C3E50"
-        active-text-color="#00B2D6"
-        router>
-        <el-menu-item index="1">
-          <el-icon><House /></el-icon>
-          <span>首页</span>
-        </el-menu-item>
-        <el-menu-item index="2">
-          <el-icon><House /></el-icon>
-          <span>菜单2</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <el-icon><House /></el-icon>
-          <span>菜单3</span>
-        </el-menu-item>
-    </el-menu>
+  <el-menu
+      default-active="1"
+      class="el-menu-aside"
+      background-color="transparent"
+      text-color="#2C3E50"
+      active-text-color="#00B2D6"
+      router>
+    <el-menu-item index="1">
+      <el-icon><House /></el-icon>
+      <span>首页</span>
+    </el-menu-item>
+    <el-menu-item index="2">
+      <el-icon><House /></el-icon>
+      <span>预约挂号</span>
+    </el-menu-item>
+    <el-menu-item index="3">
+      <el-icon><House /></el-icon>
+      <span>我的挂号</span>
+    </el-menu-item>
+    <el-menu-item index="4">
+      <el-icon><House /></el-icon>
+      <span>健康管理</span>
+    </el-menu-item>
+    <el-menu-item index="5">
+      <el-icon><House /></el-icon>
+      <span>个人中心</span>
+    </el-menu-item>
+  </el-menu>
 </div>
 </template>
 
