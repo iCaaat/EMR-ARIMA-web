@@ -4,7 +4,8 @@ import router from "@/router/index.js";
 // 创建实例
 const service = axios.create({
     baseURL: '/api', // 走 vite 代理
-    timeout: 10000
+    timeout: 10000,
+    withCredentials: true
 })
 
 /**
@@ -13,11 +14,6 @@ const service = axios.create({
  */
 service.interceptors.request.use(
     config => {
-        // 如果有 token 就自动带上
-        const token = localStorage.getItem('token')
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`
-        }
         return config
     },
     error => {
