@@ -6,17 +6,27 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/layout/AppLayout.vue'),
+      component: () => import('@/views/layout/AppLayout.vue'),
       redirect: '/home',
       children: [
         {
           path: 'home',
           name: 'RegistrationHome',
-          component: () => import('../views/registration/RegistrationHome.vue'),
+          component: () => import('@/views/registration/RegistrationHome.vue'),
           meta: {
             title: '首页',
             icon: 'House'
           }
+        },
+        {
+          path: 'me',
+          name: 'PersonalCenter',
+          component: () => import('@/views/info-center/me/Me.vue')
+        },
+        {
+          path: 'appointment',
+          name: 'AppointmentRegistration',
+          component: () => import('@/views/registration/AppointmentRegistration.vue')
         }
       ]
     },

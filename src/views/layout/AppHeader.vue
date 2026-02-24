@@ -1,5 +1,22 @@
 <script setup>
 import logo from '@/assets/logo.png'
+import router from "@/router/index.js";
+
+const commandMap = {
+  me: () => {
+    router.push('/me')
+  },
+  setting: () => {
+    router.push('/setting')
+  },
+  logOut: () => {
+
+  }
+}
+
+const handleCommand = command => {
+  commandMap[command]?.()
+}
 </script>
 
 <template>
@@ -21,15 +38,15 @@ import logo from '@/assets/logo.png'
   </div>
 
   <div class="header-right">
-    <el-dropdown>
+    <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
         用户名<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item>个人中心</el-dropdown-item>
-          <el-dropdown-item>设置</el-dropdown-item>
-          <el-dropdown-item divided>退出登录</el-dropdown-item>
+          <el-dropdown-item command="me">个人中心</el-dropdown-item>
+          <el-dropdown-item command="setting">设置</el-dropdown-item>
+          <el-dropdown-item divided command="logOut">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>

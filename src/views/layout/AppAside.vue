@@ -13,11 +13,15 @@ const textColor = '#00B2D6'
       text-color="#2C3E50"
       active-text-color="#00B2D6"
       router>
-    <el-menu-item index="1">
+    <el-menu-item index="home">
       <el-icon><House /></el-icon>
       <span>首页</span>
     </el-menu-item>
-    <el-menu-item index="2">
+    <el-menu-item index="appointment">
+      <el-icon><House /></el-icon>
+      <span>预约挂号</span>
+    </el-menu-item>
+    <el-menu-item index="appointment">
       <el-icon><House /></el-icon>
       <span>预约挂号</span>
     </el-menu-item>

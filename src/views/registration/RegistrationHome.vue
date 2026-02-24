@@ -66,10 +66,6 @@ const summaryList = [
 </template>
 
 <style scoped>
-.page-title {
-  margin: 0 0 20px;
-}
-
 .data-overview {
   display: flex;
   flex-direction: column;
