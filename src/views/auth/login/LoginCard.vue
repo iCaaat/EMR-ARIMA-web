@@ -17,6 +17,8 @@ const data = reactive({
 const handleSubmitLogin = async () => {
   try {
     const res = await login(data)
+    const token = res.data.token
+    localStorage.setItem('token', token)
 
     // TODO: 保存token
 

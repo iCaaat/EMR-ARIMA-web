@@ -1,5 +1,6 @@
 import axios from 'axios'
 import router from "@/router/index.js";
+import { ElMessage} from "element-plus";
 
 // 创建实例
 const service = axios.create({
@@ -14,6 +15,10 @@ const service = axios.create({
  */
 service.interceptors.request.use(
     config => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`
+        }
         return config
     },
     error => {
@@ -42,9 +47,15 @@ service.interceptors.response.use(
     error => {
         if (error.response?.status === 401) {
             localStorage.removeItem('token')
+            ElMessage.error('未登录或登录已过期')
             router.push('/login')
+        }else if (error.response?.status === 403) {
+            localStorage.removeItem('token')
+            alert('无访问权限')
+            router.push('/login')
+        } else {
+            ElMessage.error('服务器异常')
         }
-        console.error('网络错误:', error)
         return Promise.reject(error)
     }
 )
