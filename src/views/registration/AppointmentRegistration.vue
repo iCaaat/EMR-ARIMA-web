@@ -19,19 +19,34 @@ const prev = () => {
 <template>
   <h2 class="page-title">数据概览</h2>
 
-  <el-steps style="max-width: 800px" :active="active" finish-status="success">
-    <el-step title="科室选择" />
-    <el-step title="预约医生" />
-    <el-step title="选择时段" />
-  </el-steps>
+  <div class="page-content">
+    <div class="steps-wrapper">
+      <el-steps :active="active" finish-status="success">
+        <el-step title="科室选择" />
+        <el-step title="预约医生" />
+        <el-step title="选择时段" />
+      </el-steps>
+    </div>
 
-  <!-- 步骤内容区 -->
-  <SelectDepartment></SelectDepartment>
+
+    <!-- 步骤内容区 -->
+    <SelectDepartment></SelectDepartment>
+  </div>
 
   <el-button @click="prev">上一步</el-button>
   <el-button @click="next" type="primary">下一步</el-button>
 </template>
 
 <style scoped>
+.page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* 所有子元素水平居中 */
+}
 
+.steps-wrapper {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+}
 </style>
