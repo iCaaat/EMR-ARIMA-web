@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, ref} from "vue";
 import {getDepartments} from "@/api/registration.js";
 
 const department = ref([])

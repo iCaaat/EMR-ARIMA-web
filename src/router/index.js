@@ -13,22 +13,21 @@ const router = createRouter({
           path: 'home',
           name: 'RegistrationHome',
           component: () => import('@/views/registration/RegistrationHome.vue'),
-          meta: {
-            title: '首页',
-            icon: 'House'
-          }
         },
         {
           path: 'me',
           name: 'PersonalCenter',
-          component: () => import('@/views/info-center/me/Me.vue')
+          component: () => import('@/views/info-center/me/Me.vue'),
         },
         {
           path: 'appointment',
           name: 'AppointmentRegistration',
-          component: () => import('@/views/registration/AppointmentRegistration.vue')
+          component: () => import('@/views/registration/AppointmentRegistration.vue'),
         }
-      ]
+      ],
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/login',
@@ -46,6 +45,14 @@ const router = createRouter({
       component: () => import('../views/test.vue'),
     }
   ],
+})
+
+router.beforeEach((to) => {
+  const token = localStorage.getItem('token')
+
+  if (to.matched.some(record => record.meta.requiresAuth) && !token) {
+    return '/login'
+  }
 })
 
 export default router
