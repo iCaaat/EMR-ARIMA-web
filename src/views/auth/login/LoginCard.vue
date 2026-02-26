@@ -6,6 +6,7 @@ import { reactive } from "vue";
 import userIcon from '@/assets/icons/login_and_register/user_icon.svg';
 import passwordIcon from '@/assets/icons/login_and_register/user_passwd_icon.svg';
 import lineIcon from '@/assets/icons/login_and_register/line.svg';
+import {ElMessage} from "element-plus";
 
 const router = useRouter();
 const data = reactive({
@@ -13,19 +14,14 @@ const data = reactive({
   password: ''
 })
 
-// TODO: 提交登录信息
 const handleSubmitLogin = async () => {
-  try {
-    const res = await login(data)
-    const token = res.data.token
-    localStorage.setItem('token', token)
+  const res = await login(data)
+  const token = res.data.token
+  localStorage.setItem('token', token)
 
-    // TODO: 保存token
-
-    router.push('/')
-  } catch (err) {
-    alert(err.message || '登录失败，请重试')
-  }
+  const username = res.data.username
+  ElMessage.success('用户:' + username + ',登录成功!')
+  await router.push('/')
 }
 </script>
 

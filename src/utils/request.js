@@ -39,7 +39,7 @@ service.interceptors.response.use(
 
         if (res.code !== 200) {
             console.error(res.message)
-            return Promise.reject(res.message)
+            return Promise.reject(res)
         }
 
         return res
@@ -51,12 +51,12 @@ service.interceptors.response.use(
             router.push('/login')
         }else if (error.response?.status === 403) {
             localStorage.removeItem('token')
-            alert('无访问权限')
+            ElMessage.error('无访问权限')
             router.push('/login')
         } else {
-            ElMessage.error('服务器异常')
+            ElMessage.error(error.response?.data?.message)
         }
-        return Promise.reject(error)
+        return Promise.reject(error.response?.data)
     }
 )
 

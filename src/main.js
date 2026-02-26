@@ -10,9 +10,13 @@ import router from './router'
 import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+import {createPinia} from "pinia";
+// pinia
+const pinia = createPinia()
 
 const app = createApp(App)
 
+app.use(pinia)
 app.use(router)
 app.use(ElementPlus, {
     locale: zhCn,

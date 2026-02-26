@@ -1,22 +1,50 @@
 <script setup>
 import logo from '@/assets/logo.png'
 import router from "@/router/index.js";
+import {onMounted, ref} from "vue";
+import {myInfo} from "@/api/auth.js";
+import {useLayoutStore} from "@/stores/layout.js";
+import {ElMessage} from "element-plus";
+
+const username = ref('')
+const firstName = ref('')
+const layoutStore = useLayoutStore()
 
 const commandMap = {
-  me: () => {
+  personalInfo: () => {
     router.push('/me')
   },
-  setting: () => {
-    router.push('/setting')
-  },
-  logOut: () => {
-
+  logout: () => {
+    localStorage.removeItem('token')
+    ElMessage.info('已退出登录')
+    router.push('/login')
   }
 }
 
 const handleCommand = command => {
   commandMap[command]?.()
 }
+
+const handleSelectMenu = (key) => {
+  layoutStore.activeModule = key
+  if (key === 'registration') {
+    router.push('/home')
+  } else if (key === 'record') {
+    router.push('/dashboard')
+  }
+}
+
+const handleClickAvatar = () => {
+  router.push('/me')
+}
+
+onMounted(async () => {
+  const res = await myInfo()
+
+  const realName = res.data.realName
+  username.value = res.data.username
+  firstName.value = realName.charAt(0)
+})
 </script>
 
 <template>
@@ -28,30 +56,29 @@ const handleCommand = command => {
     <el-menu
         class="header-menu"
         mode="horizontal"
-        :default-active="activeMenu"
+        :default-active="layoutStore.activeModule"
         text-color="#c4c9ce"
         active-text-color="#00B2D6"
-        router>
-      <el-menu-item index="/home">挂号</el-menu-item>
-      <el-menu-item index="/dashboard">病历</el-menu-item>
+        @select="handleSelectMenu">
+      <el-menu-item index="registration">挂号</el-menu-item>
+      <el-menu-item index="record">病历</el-menu-item>
     </el-menu>
   </div>
 
   <div class="header-right">
     <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
-        用户名<i class="el-icon-arrow-down el-icon--right"></i>
+        {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item command="me">个人中心</el-dropdown-item>
-          <el-dropdown-item command="setting">设置</el-dropdown-item>
-          <el-dropdown-item divided command="logOut">退出登录</el-dropdown-item>
+          <el-dropdown-item command="personalInfo">个人中心</el-dropdown-item>
+          <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
 
-    <span class="user-avatar">XX</span>
+    <span class="user-avatar" @click="handleClickAvatar">{{ firstName }}</span>
   </div>
 </div>
 </template>

@@ -53,6 +53,10 @@ router.beforeEach((to) => {
   if (to.matched.some(record => record.meta.requiresAuth) && !token) {
     return '/login'
   }
+
+  if (to.path === '/login' && token) {
+    return '/'
+  }
 })
 
 export default router

@@ -7,3 +7,10 @@ export function login(data) {
         data
     })
 }
+
+export function myInfo() {
+    return request({
+        url: '/users/me',
+        method: 'get'
+    })
+}
