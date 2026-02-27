@@ -14,8 +14,9 @@ const menuMap = {
     { name: '我的挂号', path: '/myRegistration'}
   ],
   record: [
-    { name: '病历列表', path: '/dashboard'},
-    { name: '健康管理', path: '/health'}
+    { name: '我的病历', path: '/dashboard'},
+    { name: '健康管理', path: '/health'},
+    { name: '导出', path: '/export'}
   ]
 }
 

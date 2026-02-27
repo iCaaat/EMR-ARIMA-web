@@ -23,6 +23,11 @@ const router = createRouter({
           path: 'appointment',
           name: 'AppointmentRegistration',
           component: () => import('@/views/registration/AppointmentRegistration.vue'),
+        },
+        {
+          path: 'dashboard',
+          name: 'Dashboard',
+          component: () => import('@/views/dashboard/Dashboard.vue')
         }
       ],
       meta: {
