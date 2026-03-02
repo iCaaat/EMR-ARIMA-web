@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
-const emit = defineEmits(['back', 'next'])
+const emit = defineEmits(['back', 'select-role'])
 
 // 默认选择患者
 const role = ref('patient')
@@ -30,7 +30,7 @@ const role = ref('patient')
           返回
         </el-button>
 
-        <el-button type="primary" @click="emit('next', role)" class="btn-next btn">
+        <el-button type="primary" @click="emit('select-role', role)" class="btn-next btn">
           下一步
         </el-button>
       </div>

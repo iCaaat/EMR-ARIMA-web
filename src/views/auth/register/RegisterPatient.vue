@@ -6,7 +6,7 @@ import lineIcon from "@/assets/icons/login_and_register/line.svg";
 import passwordIcon from "@/assets/icons/login_and_register/user_passwd_icon.svg";
 import userIcon from "@/assets/icons/login_and_register/user_icon.svg";
 
-const emit = defineEmits(['back', 'next']);
+const emit = defineEmits(['back', 'submit-exp-form']);
 const registerForm = reactive({
   realName: '',
   idCard: '',
@@ -182,7 +182,7 @@ const registerFormRules = reactive({
         上一步
       </el-button>
 
-      <el-button type="primary" @click="emit('next', registerForm)" class="btn-next btn">
+      <el-button type="primary" @click="emit('submit-exp-form', registerForm)" class="btn-next btn">
         提交注册
       </el-button>
     </div>

@@ -14,6 +14,10 @@ const prev = () => {
     active.value = 0;
   }
 }
+
+const handleFirstStep = (department) => {
+  console.log("选择的科室：", department);
+}
 </script>
 
 <template>
@@ -28,13 +32,11 @@ const prev = () => {
       </el-steps>
     </div>
 
+    <el-divider></el-divider>
 
     <!-- 步骤内容区 -->
-    <SelectDepartment></SelectDepartment>
+    <SelectDepartment v-if="active === 0" @selectDepartment="handleFirstStep"></SelectDepartment>
   </div>
-
-  <el-button @click="prev">上一步</el-button>
-  <el-button @click="next" type="primary">下一步</el-button>
 </template>
 
 <style scoped>

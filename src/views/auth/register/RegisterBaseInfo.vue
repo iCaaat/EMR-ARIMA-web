@@ -6,10 +6,10 @@ import lineIcon from "@/assets/icons/login_and_register/line.svg";
 import passwordIcon from "@/assets/icons/login_and_register/user_passwd_icon.svg";
 import userIcon from "@/assets/icons/login_and_register/user_icon.svg";
 
-const emit = defineEmits(['back', 'next']);
+const emit = defineEmits(['back', 'submit-base-info']);
 const registerForm = reactive({
-  userName: '',
-  userPasswd: '',
+  username: '',
+  password: '',
   confirmPasswd: ''
 })
 
@@ -41,12 +41,12 @@ function submitRegister() {
       <div class="input-group">
         <img :src="userIcon" alt="email-icon" class="input-icon">
         <img :src="lineIcon" alt="line-icon" class="input-line">
-        <input v-model="registerForm.userName" type="text" class="register-input" placeholder="用户名(2-20字符,英文/数字/下划线)">
+        <input v-model="registerForm.username" type="text" class="register-input" placeholder="用户名(2-20字符,英文/数字/下划线)">
       </div>
       <div class="input-group form2">
         <img :src="passwordIcon" alt="email-icon" class="input-icon">
         <img :src="lineIcon" alt="line-icon" class="input-line">
-        <input v-model="registerForm.userPasswd" type="text" class="register-input" placeholder="密码(6-20字符)">
+        <input v-model="registerForm.password" type="text" class="register-input" placeholder="密码(6-20字符)">
       </div>
       <div class="input-group form2">
         <img :src="passwordIcon" alt="email-icon" class="input-icon">
@@ -59,7 +59,7 @@ function submitRegister() {
           上一步
         </el-button>
 
-        <el-button type="primary" @click="emit('next', registerForm)" class="btn-next btn">
+        <el-button type="primary" @click="emit('submit-base-info', registerForm)" class="btn-next btn">
           下一步
         </el-button>
       </div>
