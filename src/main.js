@@ -1,7 +1,8 @@
 // css
+import 'element-plus/dist/index.css'
 import './assets/css/global.css'
 import './assets/css/common-page.css'
-import 'element-plus/dist/index.css'
+import './assets/css/element.css'
 
 import { createApp } from 'vue'
 import App from './App.vue'

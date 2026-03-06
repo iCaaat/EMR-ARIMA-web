@@ -80,29 +80,23 @@ const handleUpdateSubmit = async () => {
   }
 
   const res = await updateUserInfo(templateMe.value)
-  if (res.code === 200) {
-    ElMessage.success(res.data)
-    me.value = { ...templateMe.value }
-    editing.value = false
-    formDisabled.value = true
-    passwordShow.value = false
-  } else {
-    ElMessage.error(res.message || '更新失败')
-  }
+  ElMessage.success(res.data)
+  me.value = { ...templateMe.value }
+  editing.value = false
+  formDisabled.value = true
+  passwordShow.value = false
 }
 const handleChangePassword = async () => {
   const res = await updatePassword(passwordForm.value)
-  if (res.code === 200) {
-    ElMessage.success(res.data)
-    passwordForm.value = {
-      oldPassword: '',
-      newPassword: '',
-      confirmNewPassword: ''
-    }
-    passwordShow.value = false
-    localStorage.removeItem('token')
-    await router.push('/login')
+  ElMessage.success(res.data)
+  passwordForm.value = {
+    oldPassword: '',
+    newPassword: '',
+    confirmNewPassword: ''
   }
+  passwordShow.value = false
+  localStorage.removeItem('token')
+  await router.push('/login')
 }
 </script>
 

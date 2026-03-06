@@ -23,14 +23,9 @@ const handleSelectRole = (role) => {
 }
 
 const handleBaseInfo = async (registerForm) => {
-  try {
-    const res = await existUsername(registerForm.username)
-    if (res.data === true) {
-      ElMessage.error('用户名已存在，请重新输入')
-      return
-    }
-  } catch (error) {
-    ElMessage.error(error)
+  const res = await existUsername(registerForm.username)
+  if (res.data === true) {
+    ElMessage.error('用户名已存在，请重新输入')
     return
   }
 

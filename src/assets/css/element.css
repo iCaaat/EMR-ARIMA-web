@@ -1,0 +1,14 @@
+:root {
+    --el-color-primary: var(--primary-color);
+    --el-color-success: var(--status-good-color);
+    --el-color-warning: var(--status-warning-color);
+    --el-color-danger: var(--status-danger-color);
+}
+
+.el-message--error {
+    color: var(--status-danger-color);
+}
+
+.el-message--success {
+    color: var(--status-good-color);
+}
