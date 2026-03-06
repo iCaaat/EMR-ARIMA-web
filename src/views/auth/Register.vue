@@ -6,34 +6,55 @@ import SelectRole from "@/views/auth/register/SelectRole.vue";
 import RegisterBaseInfo from "@/views/auth/register/RegisterBaseInfo.vue";
 import RegisterPatient from "@/views/auth/register/RegisterPatient.vue";
 import {ElMessage} from "element-plus";
+import {existUsername, register} from "@/api/auth.js";
 
 const step = ref(1)
 const router = useRouter()
 const registerInfo = reactive({
-  role: '',
+  roleCode: '',
   username: '',
   password: ''
 })
 
 const handleSelectRole = (role) => {
-  registerInfo.role = role
+  registerInfo.roleCode = role
   // 前往第二步
   step.value = 2
 }
 
-const handleBaseInfo = (registerForm) => {
+const handleBaseInfo = async (registerForm) => {
+  try {
+    const res = await existUsername(registerForm.username)
+    if (res.data === true) {
+      ElMessage.error('用户名已存在，请重新输入')
+      return
+    }
+  } catch (error) {
+    ElMessage.error(error)
+    return
+  }
+
+  if (registerForm.password !== registerForm.confirmPasswd) {
+    return ElMessage.error('两次输入的密码不一致，请重新输入')
+  }
+
   registerInfo.username = registerForm.username
   registerInfo.password = registerForm.password
   // 前往第三步
   step.value = 3
 }
 
-// TODO: 发送注册请求
-const handleSubmitRegister = (expInfo) => {
+const handleSubmitRegister = async (expInfo) => {
   Object.assign(registerInfo, expInfo)
+  try {
+    const res = await register(registerInfo)
+  } catch (error) {
+    ElMessage.error(error)
+    return
+  }
   // 提交注册信息，完成注册
   ElMessage.success('注册成功,将自动跳转到登录页')
-  router.push('/login')
+  await router.push('/login')
 }
 
 const handleBackToLogin = () => {
@@ -54,7 +75,7 @@ const handleBackToLogin = () => {
         @submit-base-info="handleBaseInfo"
     />
     <RegisterPatient
-      v-else-if="step === 3 && registerInfo.role === 'patient'"
+      v-else-if="step === 3 && registerInfo.roleCode === 'patient'"
       @back="step = 2"
       @submit-exp-form="handleSubmitRegister"
     />

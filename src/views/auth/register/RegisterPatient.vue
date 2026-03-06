@@ -1,12 +1,15 @@
 <script setup>
-import { reactive } from "vue";
+import {reactive, ref, watch} from "vue";
 
 import emailIcon from "@/assets/icons/login_and_register/email_icon.svg";
 import lineIcon from "@/assets/icons/login_and_register/line.svg";
 import passwordIcon from "@/assets/icons/login_and_register/user_passwd_icon.svg";
 import userIcon from "@/assets/icons/login_and_register/user_icon.svg";
+import {ElMessage} from "element-plus";
 
 const emit = defineEmits(['back', 'submit-exp-form']);
+
+const registerFormRef = ref()
 const registerForm = reactive({
   realName: '',
   idCard: '',
@@ -53,6 +56,31 @@ const registerFormRules = reactive({
   emergencyPhone: [],
   insuranceNumber: []
 })
+
+watch(
+    () => registerForm.idCard,
+    (val) => {
+      if (!val || val.length < 18) return
+
+      // 根据身份证号自动提取出生日期和性别
+      const birthYear = val.substring(6, 10)
+      const birthMonth = val.substring(10, 12)
+      const birthDay = val.substring(12, 14)
+      registerForm.birthday = `${birthYear}-${birthMonth}-${birthDay}`
+
+      const genderCode = parseInt(val.substring(16, 17))
+      registerForm.gender = (genderCode % 2 === 0) ? 'F' : 'M'
+    }
+)
+
+const handleSubmit = async () => {
+  const valid = await registerFormRef.value.validate().catch(() => false)
+  if (!valid) {
+    ElMessage.error('请完善表单信息')
+    return
+  }
+  emit('submit-exp-form', registerForm)
+}
 </script>
 
 <template>
@@ -62,6 +90,7 @@ const registerFormRules = reactive({
 
     <!-- 表单区 -->
     <el-form
+        ref="registerFormRef"
         :model="registerForm"
         :rules="registerFormRules"
         label-width="100px"
@@ -85,10 +114,9 @@ const registerFormRules = reactive({
         <!-- 性别 -->
         <el-col :span="12">
           <el-form-item label="性别" prop="gender">
-            <el-radio-group v-model="registerForm.gender">
+            <el-radio-group v-model="registerForm.gender" disabled>
               <el-radio value="M" size="default">男</el-radio>
               <el-radio value="F" size="default">女</el-radio>
-              <el-radio value="O" size="default">其他</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -101,6 +129,7 @@ const registerFormRules = reactive({
                 type="date"
                 placeholder="选择出生日期"
                 :size="'default'"
+                disabled
             />
           </el-form-item>
         </el-col>
@@ -182,7 +211,7 @@ const registerFormRules = reactive({
         上一步
       </el-button>
 
-      <el-button type="primary" @click="emit('submit-exp-form', registerForm)" class="btn-next btn">
+      <el-button type="primary" @click="handleSubmit" class="btn-next btn">
         提交注册
       </el-button>
     </div>
