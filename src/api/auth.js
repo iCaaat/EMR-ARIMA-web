@@ -30,3 +30,19 @@ export function existUsername(username) {
         params: { username }
     })
 }
+
+export function updateUserInfo(data) {
+    return request({
+        url: '/users/me',
+        method: 'put',
+        data
+    })
+}
+
+export function updatePassword(data) {
+    return request({
+        url: '/users/password',
+        method: 'put',
+        data
+    })
+}

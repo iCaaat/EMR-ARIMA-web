@@ -1,10 +1,6 @@
 <script setup>
 import {reactive, ref, watch} from "vue";
 
-import emailIcon from "@/assets/icons/login_and_register/email_icon.svg";
-import lineIcon from "@/assets/icons/login_and_register/line.svg";
-import passwordIcon from "@/assets/icons/login_and_register/user_passwd_icon.svg";
-import userIcon from "@/assets/icons/login_and_register/user_icon.svg";
 import {ElMessage} from "element-plus";
 
 const emit = defineEmits(['back', 'submit-exp-form']);
