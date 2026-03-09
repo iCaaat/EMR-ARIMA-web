@@ -2,47 +2,16 @@ import request from '@/utils/request.js'
 
 export function login(data) {
     return request({
-        url: '/users/login',
+        url: '/auth/login',
         method: 'post',
         data
     })
 }
 
-export function register(data) {
+export function refreshToken(refreshToken) {
     return request({
-        url: '/users/register',
+        url: '/auth/refresh',
         method: 'post',
-        data
-    })
-}
-
-export function myInfo() {
-    return request({
-        url: '/users/me',
-        method: 'get'
-    })
-}
-
-export function existUsername(username) {
-    return request({
-        url: '/users/exists',
-        method: 'get',
-        params: { username }
-    })
-}
-
-export function updateUserInfo(data) {
-    return request({
-        url: '/users/me',
-        method: 'put',
-        data
-    })
-}
-
-export function updatePassword(data) {
-    return request({
-        url: '/users/password',
-        method: 'put',
-        data
+        params: {refreshToken: refreshToken},
     })
 }

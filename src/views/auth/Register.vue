@@ -6,7 +6,7 @@ import SelectRole from "@/views/auth/register/SelectRole.vue";
 import RegisterBaseInfo from "@/views/auth/register/RegisterBaseInfo.vue";
 import RegisterPatient from "@/views/auth/register/RegisterPatient.vue";
 import {ElMessage} from "element-plus";
-import {existUsername, register} from "@/api/auth.js";
+import {existUsername, register} from "@/api/user.js";
 
 const step = ref(1)
 const router = useRouter()

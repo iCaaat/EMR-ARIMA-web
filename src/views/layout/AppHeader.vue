@@ -2,7 +2,7 @@
 import logo from '@/assets/logo.png'
 import router from "@/router/index.js";
 import {onMounted, ref} from "vue";
-import {myInfo} from "@/api/auth.js";
+import {myInfo} from "@/api/user.js";
 import {useLayoutStore} from "@/stores/layout.js";
 import {ElMessage} from "element-plus";
 

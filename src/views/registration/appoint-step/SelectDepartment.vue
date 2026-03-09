@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue";
 import {getDepartments} from "@/api/registration.js";
 
-const emit = defineEmits(['selectDepartment'])
+const emit = defineEmits(['select-department'])
 
 const department = ref([])
 const activeDept = ref('')
@@ -10,7 +10,7 @@ const activeDept = ref('')
 onMounted(async () => {
   const res = await getDepartments()
   department.value = res.data
-  activeDept.value = department.value[0]?.id || ''
+  activeDept.value = department.value[0]?.departmentId || ''
 })
 </script>
 
@@ -18,11 +18,11 @@ onMounted(async () => {
   <el-tabs v-model="activeDept" type="border-card" style="width: 70%">
     <el-tab-pane
         v-for="item in department"
-        :key="item.id"
+        :key="item.departmentId"
         :label="item.name"
-        :name="item.id">
+        :name="item.departmentId">
       <div class="second-container">
-        <template v-for="child in item.children" :key="child.id">
+        <template v-for="child in item.children" :key="child.departmentId">
           <el-popover
               v-if="child.children && child.children.length"
               trigger="click"
@@ -37,9 +37,9 @@ onMounted(async () => {
             <div class="third-container">
               <el-button
                   v-for="sub in child.children"
-                  :key="sub.id"
+                  :key="sub.departmentId"
                   text
-                  @click="emit('selectDepartment', sub)"
+                  @click="emit('select-department', sub)"
               >
                 {{ sub.name }}
               </el-button>
@@ -49,7 +49,7 @@ onMounted(async () => {
           <el-button
               v-else
               class="dept-btn"
-              @click="emit('selectDepartment', child)"
+              @click="emit('select-department', child)"
           >
             {{ child.name }}
           </el-button>

@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, reactive, ref} from "vue";
-import {myInfo, updatePassword, updateUserInfo} from "@/api/auth.js";
+import {myInfo, updatePassword, updateUserInfo} from "@/api/user.js";
 import {ElMessage} from "element-plus";
 import router from "@/router/index.js";
 

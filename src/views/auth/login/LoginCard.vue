@@ -16,8 +16,10 @@ const data = reactive({
 
 const handleSubmitLogin = async () => {
   const res = await login(data)
-  const token = res.data.token
+  const token = res.data.accessToken
+  const refreshToken = res.data.refreshToken
   localStorage.setItem('token', token)
+  localStorage.setItem('refresh', refreshToken)
 
   const username = res.data.username
   ElMessage.success('用户:' + username + ',登录成功!')
@@ -29,27 +31,29 @@ const handleSubmitLogin = async () => {
   <div class="login-card">
     <h2 class="login-title">欢迎</h2>
 
-    <div class="login-form form1">
-      <div class="input-group">
-        <img :src="userIcon" alt="email-icon" class="input-icon">
-        <img :src="lineIcon" alt="line-icon" class="input-line">
-        <input v-model="data.username" type="text" class="login-input" placeholder="请输入您的用户名">
-      </div>
-    </div>
-    <div class="login-form form2">
-      <div class="input-group">
-        <img :src="passwordIcon" alt="email-icon" class="input-icon">
-        <img :src="lineIcon" alt="line-icon" class="input-line">
-        <input v-model="data.password" type="text" class="login-input" placeholder="请输入您的密码">
-      </div>
-    </div>
+    <el-form ref="loginFormRef" :model="data" @submit.prevent="handleSubmitLogin" class="login-form-container">
+      <el-form-item class="form-item">
+        <div class="input-group">
+          <img :src="userIcon" alt="email-icon" class="input-icon">
+          <img :src="lineIcon" alt="line-icon" class="input-line">
+          <el-input v-model="data.username" @keydown.enter="handleSubmitLogin" class="login-input" placeholder="请输入您的用户名"></el-input>
+        </div>
+      </el-form-item>
+      <el-form-item class="form-item">
+        <div class="input-group">
+          <img :src="passwordIcon" alt="email-icon" class="input-icon">
+          <img :src="lineIcon" alt="line-icon" class="input-line">
+          <el-input v-model="data.password" @keydown.enter="handleSubmitLogin" class="login-input" placeholder="请输入您的密码"></el-input>
+        </div>
+      </el-form-item>
+    </el-form>
 
     <div class="forget-password">
       <router-link to="/forget-password" class="forget-link">忘记密码？</router-link>
     </div>
 
     <div class="login-button">
-      <button class="login-btn" @click="handleSubmitLogin">登录</button>
+      <el-button class="login-btn" @click="handleSubmitLogin">登录</el-button>
     </div>
 
     <div class="create-account">
@@ -94,38 +98,38 @@ const handleSubmitLogin = async () => {
   margin-top: 15%;
 }
 
-.login-form {
+.login-form-container {
   /* layout */
-  width: 78%;
-  height: 48px;
-
-  /* style */
-  background-color: var(--bg-color);
-  border-radius: 8px; /* 可选：让背景圆角 */
+  width: 75%;
 
   /* flex */
   display: flex;  /* 使用 flex 排列元素 */
   align-items: center;      /* 垂直居中 */
   flex-direction: column;
+  gap: 12px;
 
 }
 
-.form2 {
-  margin-top: 19px;
+.form-item {
+  width: 100%;
+  margin-bottom: 0;
+  background-color: var(--bg-color);
+  border-radius: 8px; /* 可选：让背景圆角 */
 }
 
 .input-group {
-  display: flex;
-  width: 330px;
-  height: 47px;
+  width: 85%;
+  height: 48px;
+  padding: 0 24px;
+
   align-items: center;
+  display: flex;
   gap: 13px;
   flex-shrink: 0;
 }
 
 .input-icon {
   width: 20px;
-  margin-left: 13px;
   flex-shrink: 0;
   padding: 0;
 }
@@ -136,20 +140,18 @@ const handleSubmitLogin = async () => {
 }
 
 .login-input {
-  border: none;
-  display: flex;
-  width: 212px;
-  height: 35px;
-  flex-direction: column;
-  justify-content: center;
-  flex-shrink: 0;
-
+  width: 100%;
   margin-left: 10px;
-  flex-grow: 1;  /* 让输入框填充剩余空间 */
-  background-color: var(--bg-color);  /* 设置输入框背景颜色 */
-  font-family: inherit;  /* 继承父组件字体 */
-  border: 0;
-  outline: none;
+}
+
+.login-input :deep(.el-input__wrapper) {
+  box-shadow: none;
+  background-color: transparent;
+  padding: 0;
+}
+.login-input :deep(.el-input__inner) {
+  background: transparent;
+  border: none;
 }
 
 input:focus {
