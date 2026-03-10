@@ -5,6 +5,7 @@ import {onMounted, ref} from "vue";
 import {myInfo} from "@/api/user.js";
 import {useLayoutStore} from "@/stores/layout.js";
 import {ElMessage} from "element-plus";
+import {logout} from "@/api/auth.js";
 
 const username = ref('')
 const firstName = ref('')
@@ -14,10 +15,15 @@ const commandMap = {
   personalInfo: () => {
     router.push('/me')
   },
-  logout: () => {
+  logout: async () => {
+    const refresh = localStorage.getItem("refresh")
+    const res = await logout(refresh)
+    const msg = res.data
+
     localStorage.removeItem('token')
-    ElMessage.info('已退出登录')
-    router.push('/login')
+    localStorage.removeItem('refresh')
+    ElMessage.info(msg)
+    await router.push('/login')
   }
 }
 

@@ -79,15 +79,16 @@ service.interceptors.response.use(
 
             try {
                 const res = await refreshToken(refresh)
-                const newToken = res.data
+                const newToken = res.data.accessToken
+                const newRefreshToken = res.data.refreshToken
 
                 localStorage.setItem('token', newToken)
+                localStorage.setItem('refresh', newRefreshToken)
 
                 originalRequest.headers = originalRequest.headers || {}
                 originalRequest.headers.Authorization = `Bearer ${newToken}`
 
                 return service(originalRequest)
-
             } catch (e) {
                 localStorage.removeItem('token')
                 localStorage.removeItem('refresh')

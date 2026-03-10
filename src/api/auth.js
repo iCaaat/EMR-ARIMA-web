@@ -15,3 +15,11 @@ export function refreshToken(refreshToken) {
         params: {refreshToken: refreshToken},
     })
 }
+
+export function logout(refreshToken) {
+    return request({
+        url: '/auth/logout',
+        method: 'delete',
+        params: {refreshToken: refreshToken},
+    })
+}
