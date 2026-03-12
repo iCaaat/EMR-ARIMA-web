@@ -56,7 +56,7 @@ function submitRegister() {
       <!-- 按钮区 -->
       <div class="action-row">
         <el-button @click="emit('back')" class="btn-prev btn">
-          上一步
+          返回登录
         </el-button>
 
         <el-button type="primary" @click="emit('submit-base-info', registerForm)" class="btn-next btn">

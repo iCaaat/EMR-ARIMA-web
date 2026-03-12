@@ -30,12 +30,6 @@ const templateMeRules = reactive({
     { required: true, message: '请输入身份证号', trigger: 'blur' },
     { pattern: /^[1-9]\d{5}(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}[\dXx]$/, message: '请输入有效的身份证号', trigger: 'blur' }
   ],
-  gender: [
-    { required: true, message: '请选择性别', trigger: 'change' }
-  ],
-  birthday: [
-    { required: true, message: '请选择出生日期', trigger: 'change' }
-  ],
   phone: [
     { required: true, message: '请输入手机号', trigger: 'blur' },
     { pattern: /^1[3-9]\d{9}$/, message: '请输入有效的11位手机号', trigger: 'blur' }
@@ -119,12 +113,6 @@ const handleChangePassword = async () => {
     </el-form-item>
     <el-form-item label="身份证号" prop="idCard">
       <el-input v-model="templateMe.idCard" disabled />
-    </el-form-item>
-    <el-form-item label="性别" prop="gender">
-      <el-input v-model="templateMe.gender" disabled />
-    </el-form-item>
-    <el-form-item label="出生日期" prop="birthday">
-      <el-input v-model="templateMe.birthday" disabled />
     </el-form-item>
     <el-form-item label="手机号" prop="phone">
       <el-input v-model="templateMe.phone" />
