@@ -121,6 +121,11 @@ const summaryList = [
 }
 
 /* 数据统计展示区 */
+.diagram-area {
+  display: flex;
+  justify-content: space-between;
+
+}
 .diagram-card {
   width: 480px;
   height: 300px;

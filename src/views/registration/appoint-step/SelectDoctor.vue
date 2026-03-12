@@ -3,6 +3,8 @@ import {House, Picture} from "@element-plus/icons-vue";
 import {ref} from "vue";
 import {ElMessage} from "element-plus";
 
+import hospital from "@/assets/icons/medical/hospital.svg"
+
 const emit = defineEmits(['select-doctor', 'back'])
 
 const dateActiveId = ref(1)
@@ -39,7 +41,7 @@ const handleSelectDate = (index) => {
     <!-- 科室信息区 -->
     <el-card style="width: 80%;border: 0; border-radius: 10px;" shadow="never">
       <div class="card-body">
-        <el-image class="hospital-img">
+        <el-image class="hospital-img img-container" :src="hospital">
           <template #error>
             <div class="image-slot">
               <el-icon><Picture /></el-icon>
@@ -82,11 +84,11 @@ const handleSelectDate = (index) => {
     </div>
 
     <!-- 医生信息列表 -->
-    <div class="doctor-list">
+    <div class="doctor-list" v-if="doctors.length > 0">
       <div class="doctor-item" v-for="doctor in doctors" :key="doctor.id">
 
         <!-- 左侧头像 -->
-        <el-image class="doctor-avatar">
+        <el-image class="doctor-avatar img-container">
           <template #error>
             <div class="image-slot">
               <el-icon><Picture /></el-icon>
@@ -123,6 +125,8 @@ const handleSelectDate = (index) => {
 
       </div>
     </div>
+
+    <el-empty v-else></el-empty>
   </div>
 </template>
 
@@ -138,6 +142,7 @@ const handleSelectDate = (index) => {
 /* 医院卡片 */
 .card-body {
   display: flex;
+  margin-left: 5%;
 }
 
 .hospital-img {
@@ -167,7 +172,7 @@ const handleSelectDate = (index) => {
 }
 
 .image-slot {
-  font-size: 50px;
+  font-size: 30px;
 }
 
 /* 医生信息头 */
@@ -279,5 +284,13 @@ const handleSelectDate = (index) => {
 .doctor-action {
   width: 120px;
   text-align: right;
+}
+
+/* 通用 */
+.img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 </style>
