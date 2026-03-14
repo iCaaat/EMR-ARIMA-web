@@ -1,0 +1,1 @@
+export const AVATAR_BASE_URL = import.meta.env.VITE_AVATAR_BASE_URL

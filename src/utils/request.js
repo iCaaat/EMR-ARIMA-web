@@ -104,7 +104,12 @@ service.interceptors.response.use(
             ElMessage.error('无访问权限')
             router.push('/login')
         } else if (error.response?.status === 500) {
-            ElMessage.error('服务器异常')
+            const msg = error.response?.data?.message
+            if (msg) {
+                ElMessage.error(msg)
+            } else {
+                ElMessage.error('服务器异常')
+            }
         } else {
             ElMessage.error(error.response?.data?.message)
         }

@@ -2,10 +2,12 @@
 import {ref} from "vue";
 import SelectDepartment from "@/views/registration/appoint-step/SelectDepartment.vue";
 import SelectDoctor from "@/views/registration/appoint-step/SelectDoctor.vue";
+import SelectPeriod from "@/views/registration/appoint-step/SelectPeriod.vue";
 
 const active = ref(0);
 
 const selectDepartment = ref({});
+const selectSchedule = ref({})
 
 const next = () => {
   if (active.value++ > 2) {
@@ -24,8 +26,13 @@ const handleFirstStep = (department) => {
 }
 
 const handleSecondStep = (schedule) => {
-  console.log(schedule);
+  selectSchedule.value = schedule;
+  next()
 }
+const handleAppointment = (appointment) => {
+  console.log(appointment);
+}
+
 </script>
 
 <template>
@@ -46,6 +53,8 @@ const handleSecondStep = (schedule) => {
     <SelectDepartment v-if="active === 0" @select-department="handleFirstStep"></SelectDepartment>
 
     <SelectDoctor v-else-if="active === 1"  :department="selectDepartment" @back="active = 0" @select-doctor="handleSecondStep"></SelectDoctor>
+
+    <SelectPeriod v-else :schedule="selectSchedule" @back="active = 1" @appointment="handleAppointment"></SelectPeriod>
   </div>
 </template>
 

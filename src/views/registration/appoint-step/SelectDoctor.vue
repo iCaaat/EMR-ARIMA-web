@@ -4,7 +4,10 @@ import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
 
 import hospital from "@/assets/icons/medical/hospital.svg"
+import doctorAvatar from "@/assets/icons/medical/doctor.svg"
+
 import {getDoctors, getSevenDays, loadSelectDepartment} from "@/api/registration.js";
+import {AVATAR_BASE_URL} from "@/config/index.js";
 
 const emit = defineEmits(['select-doctor', 'back'])
 const props = defineProps({
@@ -13,7 +16,6 @@ const props = defineProps({
 const selectDepartmentId = props.department.departmentId
 const selectDepartmentInfo = ref({})
 
-const baseUrl = "http://localhost:8080/files/"
 const dateActiveId = ref(0)
 const resetDepartment = () => {
   emit('back')
@@ -97,10 +99,10 @@ onMounted(async () => {
       <div class="doctor-item" v-for="doctor in doctors" :key="doctor.id">
 
         <!-- 左侧头像 -->
-        <el-image class="doctor-avatar img-container" :src="baseUrl + doctor.avatar">
+        <el-image class="doctor-avatar img-container" :src="AVATAR_BASE_URL + doctor.avatar">
           <template #error>
             <div class="image-slot">
-              <el-icon><Picture /></el-icon>
+              <el-image :src="doctorAvatar" alt="医生头像" />
             </div>
           </template>
         </el-image>

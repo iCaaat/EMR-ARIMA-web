@@ -28,3 +28,17 @@ export function loadSelectDepartment(departmentId) {
         method: 'GET'
     })
 }
+
+export function loadSelectSchedule(scheduleId) {
+    return request({
+        url: `/registration/schedules/${scheduleId}`,
+        method: 'GET'
+    })
+}
+
+export function loadPeriod(scheduleId) {
+    return request({
+        url: `/registration/period/${scheduleId}`,
+        method: 'GET'
+    })
+}
