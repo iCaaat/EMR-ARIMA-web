@@ -5,7 +5,7 @@ import SelectDoctor from "@/views/registration/appoint-step/SelectDoctor.vue";
 
 const active = ref(0);
 
-const selectDepartment = ref([]);
+const selectDepartment = ref({});
 
 const next = () => {
   if (active.value++ > 2) {
@@ -19,7 +19,6 @@ const prev = () => {
 }
 
 const handleFirstStep = (department) => {
-  console.log("选择的科室：", department);
   selectDepartment.value = department;
   next()
 }
@@ -46,7 +45,7 @@ const handleSecondStep = (schedule) => {
     <!-- 步骤内容区 -->
     <SelectDepartment v-if="active === 0" @select-department="handleFirstStep"></SelectDepartment>
 
-    <SelectDoctor v-else-if="active === 1" @back="active = 0" @select-doctor="handleSecondStep"></SelectDoctor>
+    <SelectDoctor v-else-if="active === 1"  :department="selectDepartment" @back="active = 0" @select-doctor="handleSecondStep"></SelectDoctor>
   </div>
 </template>
 

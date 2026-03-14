@@ -1,39 +1,48 @@
 <script setup>
 import {House, Picture} from "@element-plus/icons-vue";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
 
 import hospital from "@/assets/icons/medical/hospital.svg"
+import {getDoctors, getSevenDays, loadSelectDepartment} from "@/api/registration.js";
 
 const emit = defineEmits(['select-doctor', 'back'])
+const props = defineProps({
+  department: Object
+})
+const selectDepartmentId = props.department.departmentId
+const selectDepartmentInfo = ref({})
 
-const dateActiveId = ref(1)
+const baseUrl = "http://localhost:8080/files/"
+const dateActiveId = ref(0)
 const resetDepartment = () => {
   emit('back')
 }
-const doctors = ref([
-  {
-    id: 1,
-    name: "张医生",
-    title: "主任医师",
-    remain: 8,
-    fee: 20
-  },
-  {
-    id: 2,
-    name: "李医生",
-    title: "副主任医师",
-    remain: 5,
-    fee: 15
-  }
-])
+const doctors = ref([])
+const dateList = ref([])
+const selectedDate = ref("")
 
 const appointment = (doctor) => {
   emit("select-doctor", doctor)
 }
-const handleSelectDate = (index) => {
+const handleSelectDate = (date, index) => {
   dateActiveId.value = index
+  selectedDate.value = date
+  loadDoctors()
 }
+const loadDoctors = async () => {
+  const res = await getDoctors(selectDepartmentId, selectedDate.value)
+  doctors.value = res.data
+}
+
+onMounted(async () => {
+  const res = await getSevenDays();
+  dateList.value = res.data;
+  selectedDate.value = dateList.value[0].date
+  await loadDoctors()
+  const departmentRes = await loadSelectDepartment(selectDepartmentId)
+  selectDepartmentInfo.value = departmentRes.data
+})
 </script>
 
 <template>
@@ -50,9 +59,9 @@ const handleSelectDate = (index) => {
         </el-image>
         <div class="card-right">
           <div class="hospital-text">
-            <h2>二级科室名称</h2>
-            <p>三级科室名称</p>
-            <p class="department-description">描述</p>
+            <h2>{{ selectDepartmentInfo.parentDepartmentName }}</h2>
+            <p>{{ selectDepartmentInfo.selectDepartmentName }}</p>
+            <p class="department-description">{{ selectDepartmentInfo.description }}</p>
           </div>
           <div class="hospital-right">
             <p>操作</p>
@@ -73,11 +82,11 @@ const handleSelectDate = (index) => {
       <el-splitter>
         <el-splitter-panel
             :resizable="false"
-            v-for="index in 7"
-            :key="index">
-          <div class="date-text-area" @click="handleSelectDate(index)" hover="hover">
-            <el-text class="date-text" :class="{ 'active': dateActiveId === index }">星期一</el-text>
-            <el-text class="date-text" :class="{ 'active': dateActiveId === index }">03-10</el-text>
+            v-for="(item, index) in dateList"
+            :key="item.date">
+          <div class="date-text-area" @click="handleSelectDate(item.date, index)" hover="hover">
+            <el-text class="date-text" :class="{ 'active': dateActiveId === index }">{{ item.week }}</el-text>
+            <el-text class="date-text" :class="{ 'active': dateActiveId === index }">{{ item.monthDay }}</el-text>
           </div>
         </el-splitter-panel>
       </el-splitter>
@@ -88,7 +97,7 @@ const handleSelectDate = (index) => {
       <div class="doctor-item" v-for="doctor in doctors" :key="doctor.id">
 
         <!-- 左侧头像 -->
-        <el-image class="doctor-avatar img-container">
+        <el-image class="doctor-avatar img-container" :src="baseUrl + doctor.avatar">
           <template #error>
             <div class="image-slot">
               <el-icon><Picture /></el-icon>
@@ -99,18 +108,19 @@ const handleSelectDate = (index) => {
         <!-- 医生信息 -->
         <div class="doctor-info">
           <div class="doctor-name">
-            <span class="name">{{ doctor.name }}</span>
-            <el-tag type="success" size="small">普通门诊</el-tag>
+            <span class="name">{{ doctor.realName }}</span>
+            <el-tag v-if="doctor.outpatientType === '专家门诊'" type="danger" size="small">{{ doctor.outpatientType }}</el-tag>
+            <el-tag v-else type="success" size="small">{{ doctor.outpatientType }}</el-tag>
           </div>
 
           <div class="doctor-oc-title">
-            {{ doctor.title }}
+            {{ doctor.doctorTitle }}
           </div>
         </div>
 
         <!-- 号源 -->
         <div class="doctor-remain">
-          余 {{ doctor.remain }} 号
+          余 {{ doctor.remainNumber }} 号
         </div>
 
         <!-- 价格 -->
