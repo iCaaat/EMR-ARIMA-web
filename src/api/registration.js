@@ -42,3 +42,11 @@ export function loadPeriod(scheduleId) {
         method: 'GET'
     })
 }
+
+export function loadSlots(scheduleId, period) {
+    return request({
+        url: `/registration/slots`,
+        method: 'GET',
+        params: {scheduleId: scheduleId, period: period}
+    })
+}

@@ -11,6 +11,7 @@ const menuMap = {
   registration: [
     { name: '首页', path: '/home', icon: House},
     { name: '预约挂号', path: '/appointment', icon: FirstAidKit},
+    { name: '就诊人管理', path: '/patient'},
     { name: '我的挂号', path: '/myRegistration'}
   ],
   record: [

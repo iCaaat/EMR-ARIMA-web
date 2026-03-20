@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {AVATAR_BASE_URL} from "@/config/index.js";
-import {loadPeriod, loadSelectSchedule} from "@/api/registration.js";
+import {loadPeriod, loadSelectSchedule, loadSlots} from "@/api/registration.js";
 
 import doctorAvatar from "@/assets/icons/medical/doctor.svg"
 
@@ -11,28 +11,41 @@ const props = defineProps({
 const emit = defineEmits(['back']);
 
 const selectSchedule = ref({})
+const selectScheduleId = ref(null)
 const periodList = ref([])
 const selectPeriod = ref('')
-const appointForm = ref({})
+const slotList = ref([])
+const appointForm = ref({
+  contactPhone: null,
+  payeeCode: null,
+  slotId: null
+})
 
-const handleClick = async () => {
-  console.log(selectSchedule)
+const handleResetForm = () => {
+  selectPeriod.value = ''
+  appointForm.value = {}
 }
-const handleSelectPeriod = () => {
-  console.log(selectSchedule)
+const handleAppoint = async () => {
+  console.log(appointForm.value)
+}
+const handleSelectPeriod = async () => {
+  console.log(selectScheduleId.value + ': ' + selectPeriod.value)
+  const res = await loadSlots(selectScheduleId.value, selectPeriod.value)
+  slotList.value = res.data
 }
 
 onMounted(async () => {
   const scheduleId = props.schedule.scheduleId
   const res = await loadSelectSchedule(scheduleId)
+  selectScheduleId.value = scheduleId
   selectSchedule.value = res.data
 
   const periodRes = await loadPeriod(scheduleId)
   const rawPeriod = periodRes.data
   rawPeriod.forEach(item => {
     const p = {
-      label: item.period + ' / 余' + item.remainNumber + '号',
-      value: item.slotId
+      label: item.displayPeriod + ' / 余' + item.remainNumber + '号',
+      value: item.period
     }
     periodList.value.push(p)
   })
@@ -92,8 +105,8 @@ onMounted(async () => {
           </el-select>
         </el-form-item>
         <el-form-item label="序号">
-          <el-select placeholder="请选择就诊时段">
-
+          <el-select v-model="appointForm.slotId" placeholder="请选择就诊时段" >
+            <el-option v-for="slot in slotList" :key="slot.slotId" :label="slot.displayNo" :value="slot.slotId" />
           </el-select>
         </el-form-item>
         <el-form-item label="就诊人">
@@ -102,11 +115,11 @@ onMounted(async () => {
           </el-select>
         </el-form-item>
         <el-form-item label="联系方式">
-          <el-input placeholder="填写接收预约短信的号码"></el-input>
+          <el-input v-model="appointForm.contactPhone" placeholder="填写接收预约短信的号码"></el-input>
           <span class="contact-warning">预约短信回发送到此号码，请认真填写</span>
         </el-form-item>
         <el-form-item label="收费人员工号">
-          <el-input placeholder="请输入收费人员工号（选填）"></el-input>
+          <el-input v-model="appointForm.payeeCode" placeholder="请输入收费人员工号（选填）"></el-input>
         </el-form-item>
       </el-form>
 
@@ -114,8 +127,8 @@ onMounted(async () => {
 
       <div class="form-right">
         <p>操作</p>
-        <el-button type="info" @click="handleClick" >重置填写</el-button>
-        <el-button type="primary" @click="handleClick" >确认预约</el-button>
+        <el-button type="info" @click="handleResetForm" >重置填写</el-button>
+        <el-button type="primary" @click="handleAppoint" >确认预约</el-button>
       </div>
     </div>
   </div>
