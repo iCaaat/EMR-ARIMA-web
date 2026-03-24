@@ -38,3 +38,17 @@ export function updatePassword(data) {
         data
     })
 }
+
+export function getUserPatients() {
+    return request({
+        url: '/patients',
+        method: 'get'
+    })
+}
+
+export function getPatientDetail(patientId) {
+    return request({
+        url: `/patients/${patientId}`,
+        method: 'get'
+    })
+}
