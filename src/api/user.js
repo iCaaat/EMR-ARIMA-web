@@ -52,3 +52,19 @@ export function getPatientDetail(patientId) {
         method: 'get'
     })
 }
+
+export function updatePatientDetail(data) {
+    return request({
+        url: `/patients`,
+        method: 'put',
+        data
+    })
+}
+
+export function addPatientDetail(data) {
+    return request({
+        url: `/patients`,
+        method: 'post',
+        data
+    })
+}

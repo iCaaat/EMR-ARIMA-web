@@ -1,5 +1,7 @@
 <script setup>
-const emit = defineEmits(['view-detail'])
+import {Close} from "@element-plus/icons-vue";
+
+const emit = defineEmits(['view-detail', 'close'])
 
 const props = defineProps({
   data: {
@@ -11,12 +13,16 @@ const props = defineProps({
 
 <template>
   <el-card shadow="false" class="card">
+    <el-icon class="card-close" @click="emit('close')">
+      <Close />
+    </el-icon>
+
     <div class="card-body">
       <div class="card-left">
         <el-avatar size="large" shape="square" :src="data.avatarUrl">Ava</el-avatar>
         <div class="identity-info">
           <h2 class="identity-name">{{ data.identityName }}</h2>
-          <div class="identity-relation">关系：{{ data.relation }}</div>
+          <div class="identity-relation">关系：{{ data.relationDisplay }}</div>
         </div>
         <div class="identity-number">
           {{ data.identityNumber }}
@@ -43,6 +49,8 @@ const props = defineProps({
   padding: 10px;
   border-radius: 15px;
   border-color: var(--border-color);
+
+  position: relative;
 }
 
 .card-body {
@@ -75,5 +83,15 @@ const props = defineProps({
   justify-content: flex-end;
   align-items: center;
   gap: 12px;
+}
+
+.card-close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--status-danger-color);
 }
 </style>
