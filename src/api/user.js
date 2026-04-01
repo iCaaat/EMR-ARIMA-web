@@ -68,3 +68,10 @@ export function addPatientDetail(data) {
         data
     })
 }
+
+export function deletePatientDetail(patientId) {
+    return request({
+        url: `/patients/${patientId}`,
+        method: 'delete'
+    })
+}

@@ -1,8 +1,14 @@
 <script setup>
 import PatientCard from "@/components/registration/PatientCard.vue";
 import {onMounted, reactive, ref} from "vue";
-import {addPatientDetail, getPatientDetail, getUserPatients, updatePatientDetail} from "@/api/user.js";
-import {ElMessage} from "element-plus";
+import {
+  addPatientDetail,
+  deletePatientDetail,
+  getPatientDetail,
+  getUserPatients,
+  updatePatientDetail
+} from "@/api/user.js";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const loading = ref(true)
 const detailVisible = ref(false)
@@ -123,6 +129,22 @@ const handleDialogConfirm = async () => {
   }
 }
 
+const handleClose = (id) => {
+  ElMessageBox.confirm(
+      '此操作将删除就诊人信息',
+      '提示',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+  ).then(async () => {
+    const res = await deletePatientDetail(id)
+    ElMessage.success(res.data)
+    await loadData()
+  })
+}
+
 const loadData = async () => {
   const res = await getUserPatients()
   patients.value = res.data
@@ -151,7 +173,7 @@ onMounted(loadData)
   </div>
 
   <div class="card-container">
-    <PatientCard v-for="patient in patientList" :data="patient" @view-detail="showDetail"></PatientCard>
+    <PatientCard v-for="patient in patientList" :data="patient" @close="handleClose" @view-detail="showDetail"></PatientCard>
   </div>
 
   <el-dialog

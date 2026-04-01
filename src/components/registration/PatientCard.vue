@@ -13,7 +13,7 @@ const props = defineProps({
 
 <template>
   <el-card shadow="false" class="card">
-    <el-icon class="card-close" @click="emit('close')">
+    <el-icon class="card-close" @click="emit('close', props.data.mainId)">
       <Close />
     </el-icon>
 
