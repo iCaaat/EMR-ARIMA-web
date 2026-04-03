@@ -3,34 +3,49 @@ import {ref} from "vue";
 import SelectDepartment from "@/views/registration/appoint-step/SelectDepartment.vue";
 import SelectDoctor from "@/views/registration/appoint-step/SelectDoctor.vue";
 import SelectPeriod from "@/views/registration/appoint-step/SelectPeriod.vue";
+import {appoint} from "@/api/registration.js";
+import {ElMessage} from "element-plus";
 
 const active = ref(0);
 
-const selectDepartment = ref({});
+const selectDepartment = ref({})
 const selectSchedule = ref({})
+const appointmentForm = ref({})
 
 const next = () => {
   if (active.value++ > 2) {
-    active.value = 3;
+    active.value = 3
   }
 }
 const prev = () => {
   if (active.value-- <= 0) {
-    active.value = 0;
+    active.value = 0
   }
 }
 
 const handleFirstStep = (department) => {
-  selectDepartment.value = department;
+  selectDepartment.value = department
+  appointmentForm.value.departmentId = selectDepartment.value.departmentId
   next()
 }
 
 const handleSecondStep = (schedule) => {
-  selectSchedule.value = schedule;
+  selectSchedule.value = schedule
+  appointmentForm.value.scheduleId = selectSchedule.value.scheduleId
   next()
 }
-const handleAppointment = (appointment) => {
-  console.log(appointment);
+const handleAppointment = async (form) => {
+  appointmentForm.value.slotId = form.slotId
+  appointmentForm.value.patientId = form.patientId
+  appointmentForm.value.contactPhone = form.contactPhone
+  appointmentForm.value.payeeCode = form.payeeCode
+  const res = await appoint(appointmentForm.value)
+  console.log(res)
+  if (res.data > 0) {
+    ElMessage.success("预约成功")
+  } else {
+    ElMessage.error("预约失败")
+  }
 }
 
 </script>

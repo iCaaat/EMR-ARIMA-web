@@ -50,3 +50,11 @@ export function loadSlots(scheduleId, period) {
         params: {scheduleId: scheduleId, period: period}
     })
 }
+
+export function appoint(data) {
+    return request({
+        url: '/registration/appoint',
+        method: 'POST',
+        data
+    })
+}

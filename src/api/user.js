@@ -45,6 +45,12 @@ export function getUserPatients() {
         method: 'get'
     })
 }
+export function getUserPatientsSimple() {
+    return request({
+        url: '/patients/simple',
+        method: 'get'
+    })
+}
 
 export function getPatientDetail(patientId) {
     return request({

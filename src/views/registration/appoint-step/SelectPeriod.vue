@@ -4,18 +4,21 @@ import {AVATAR_BASE_URL} from "@/config/index.js";
 import {loadPeriod, loadSelectSchedule, loadSlots} from "@/api/registration.js";
 
 import doctorAvatar from "@/assets/icons/medical/doctor.svg"
+import {getUserPatientsSimple} from "@/api/user.js";
 
 const props = defineProps({
   schedule: Object
 })
-const emit = defineEmits(['back']);
+const emit = defineEmits(['back', 'appointment']);
 
 const selectSchedule = ref({})
 const selectScheduleId = ref(null)
 const periodList = ref([])
 const selectPeriod = ref('')
 const slotList = ref([])
+const userPatients = ref([])
 const appointForm = ref({
+  patientId: null,
   contactPhone: null,
   payeeCode: null,
   slotId: null
@@ -26,20 +29,21 @@ const handleResetForm = () => {
   appointForm.value = {}
 }
 const handleAppoint = async () => {
-  console.log(appointForm.value)
+  emit('appointment', appointForm.value)
 }
 const handleSelectPeriod = async () => {
-  console.log(selectScheduleId.value + ': ' + selectPeriod.value)
   const res = await loadSlots(selectScheduleId.value, selectPeriod.value)
   slotList.value = res.data
 }
 
 onMounted(async () => {
+  // 读取排班信息
   const scheduleId = props.schedule.scheduleId
   const res = await loadSelectSchedule(scheduleId)
   selectScheduleId.value = scheduleId
   selectSchedule.value = res.data
 
+  // 加载号源信息
   const periodRes = await loadPeriod(scheduleId)
   const rawPeriod = periodRes.data
   rawPeriod.forEach(item => {
@@ -49,6 +53,10 @@ onMounted(async () => {
     }
     periodList.value.push(p)
   })
+
+  // 加载就诊人信息
+  const patientRes = await getUserPatientsSimple()
+  userPatients.value = patientRes.data
 })
 </script>
 
@@ -110,8 +118,11 @@ onMounted(async () => {
           </el-select>
         </el-form-item>
         <el-form-item label="就诊人">
-          <el-select placeholder="请选择就诊人">
-
+          <el-select v-model="appointForm.patientId" placeholder="请选择就诊人">
+            <el-option v-for="patient in userPatients"
+                       :key="patient.patientId"
+                       :label="patient.realName + '[' + patient.idCardSecret + ']'"
+                       :value="patient.patientId" />
           </el-select>
         </el-form-item>
         <el-form-item label="联系方式">
