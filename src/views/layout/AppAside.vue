@@ -1,28 +1,27 @@
 <script setup>
-import {FirstAidKit, House, Service} from "@element-plus/icons-vue";
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import {useLayoutStore} from "@/stores/layout.js";
-import {computed} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
+import {getMenus} from "@/api/auth.js";
 
 const layoutStore = useLayoutStore()
 const route = useRoute()
 
-const menuMap = {
-  registration: [
-    { name: '首页', path: '/home', icon: House},
-    { name: '预约挂号', path: '/appointment', icon: FirstAidKit},
-    { name: '就诊人管理', path: '/patient'},
-    { name: '我的挂号', path: '/myRegistration'}
-  ],
-  record: [
-    { name: '我的病历', path: '/dashboard'},
-    { name: '健康管理', path: '/health'},
-    { name: '导出', path: '/export'}
-  ]
-}
+const menuList = ref([])
 
 const sideMenus = computed(() => {
-  return menuMap[layoutStore.activeModule]
+  return menuList.value.filter(
+      item => item.module === layoutStore.activeModule
+  )
+})
+const loadMenus = async () => {
+  const res = await getMenus()
+  menuList.value = res.data
+  console.log(res)
+}
+onMounted(async () => {
+  await loadMenus()
 })
 
 const textColor = '#00B2D6'
@@ -39,7 +38,7 @@ const textColor = '#00B2D6'
       router>
     <el-menu-item v-for="item in sideMenus" :key="item.path" :index="item.path">
       <el-icon>
-        <component :is="item.icon" />
+        <component :is="ElementPlusIconsVue[item.icon]" />
       </el-icon>
       <span>{{ item.name }}</span>
     </el-menu-item>

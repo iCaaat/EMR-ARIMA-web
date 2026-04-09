@@ -1,5 +1,4 @@
 <script setup>
-// TODO: 提交注册信息，进行前端验证
 import { ref, reactive } from 'vue';
 
 import lineIcon from "@/assets/icons/login_and_register/line.svg";

@@ -23,3 +23,10 @@ export function logout(refreshToken) {
         params: {refreshToken: refreshToken},
     })
 }
+
+export function getMenus() {
+    return request({
+        url: '/auth/menu',
+        method: 'get'
+    })
+}
