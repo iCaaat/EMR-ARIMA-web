@@ -33,6 +33,11 @@ const router = createRouter({
           path: 'dashboard',
           name: 'Dashboard',
           component: () => import('@/views/dashboard/Dashboard.vue')
+        },
+        {
+          path: 'user-registration',
+          name: 'UserRegistration',
+          component: () => import('@/views/registration/UserRegistration.vue')
         }
       ],
       meta: {

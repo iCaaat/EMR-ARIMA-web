@@ -58,3 +58,10 @@ export function appoint(data) {
         data
     })
 }
+
+export function getAppointments() {
+    return request({
+        url: '/registration/appoint',
+        method: 'GET'
+    })
+}

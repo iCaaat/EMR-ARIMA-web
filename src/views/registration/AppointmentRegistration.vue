@@ -5,6 +5,8 @@ import SelectDoctor from "@/views/registration/appoint-step/SelectDoctor.vue";
 import SelectPeriod from "@/views/registration/appoint-step/SelectPeriod.vue";
 import {appoint} from "@/api/registration.js";
 import {ElMessage} from "element-plus";
+import AppointmentResult from "@/views/registration/appoint-step/AppointmentResult.vue";
+import router from "@/router/index.js";
 
 const active = ref(0);
 
@@ -43,6 +45,10 @@ const handleAppointment = async (form) => {
   console.log(res)
   if (res.data > 0) {
     ElMessage.success("预约成功")
+    next()
+    setTimeout(() => {
+      router.push({ path: "/user-registration" })
+    }, 3000)
   } else {
     ElMessage.error("预约失败")
   }
@@ -69,7 +75,9 @@ const handleAppointment = async (form) => {
 
     <SelectDoctor v-else-if="active === 1"  :department="selectDepartment" @back="active = 0" @select-doctor="handleSecondStep"></SelectDoctor>
 
-    <SelectPeriod v-else :schedule="selectSchedule" @back="active = 1" @appointment="handleAppointment"></SelectPeriod>
+    <SelectPeriod v-else-if="active === 2" :schedule="selectSchedule" @back="active = 1" @appointment="handleAppointment"></SelectPeriod>
+
+    <AppointmentResult v-if="active === 3"></AppointmentResult>
   </div>
 </template>
 
