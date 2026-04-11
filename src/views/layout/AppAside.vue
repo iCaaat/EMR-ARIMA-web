@@ -3,26 +3,11 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import {useLayoutStore} from "@/stores/layout.js";
 import {computed, onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
-import {getMenus} from "@/api/auth.js";
 
 const layoutStore = useLayoutStore()
 const route = useRoute()
 
-const menuList = ref([])
-
-const sideMenus = computed(() => {
-  return menuList.value.filter(
-      item => item.module === layoutStore.activeModule
-  )
-})
-const loadMenus = async () => {
-  const res = await getMenus()
-  menuList.value = res.data
-  console.log(res)
-}
-onMounted(async () => {
-  await loadMenus()
-})
+const sideMenus = computed(() => layoutStore.sideMenus)
 
 const textColor = '#00B2D6'
 </script>

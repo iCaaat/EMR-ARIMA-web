@@ -1,13 +1,15 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { login } from '@/api/auth.js'
+import {getMenus, login} from '@/api/auth.js'
 import { reactive } from "vue";
 
 import userIcon from '@/assets/icons/login_and_register/user_icon.svg';
 import passwordIcon from '@/assets/icons/login_and_register/user_passwd_icon.svg';
 import lineIcon from '@/assets/icons/login_and_register/line.svg';
 import {ElMessage} from "element-plus";
+import {useLayoutStore} from "@/stores/layout.js";
 
+const layoutStore = useLayoutStore()
 const router = useRouter();
 const data = reactive({
   username: '',
@@ -23,7 +25,12 @@ const handleSubmitLogin = async () => {
 
   const username = res.data.username
   ElMessage.success('用户:' + username + ',登录成功!')
-  await router.push('/')
+  // 加载菜单
+  const menusRes = await getMenus()
+  const menus = menusRes.data
+  layoutStore.setMenus(menus)
+  const firstMenu = menus.find(item => item.path)
+  await router.push(firstMenu.path)
 }
 </script>
 

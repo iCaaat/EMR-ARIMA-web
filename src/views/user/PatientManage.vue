@@ -308,9 +308,6 @@ onMounted(loadData)
 
 <style scoped>
 .page-header {
-  margin: 0;
-  padding: 0;
-
   display: flex;
   justify-content: space-between;
 }

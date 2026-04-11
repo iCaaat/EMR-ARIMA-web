@@ -1,15 +1,18 @@
 <script setup>
 import logo from '@/assets/logo.png'
 import router from "@/router/index.js";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {myInfo} from "@/api/user.js";
 import {useLayoutStore} from "@/stores/layout.js";
 import {ElMessage} from "element-plus";
 import {logout} from "@/api/auth.js";
+import {useRoute} from "vue-router";
 
 const username = ref('')
 const firstName = ref('')
 const layoutStore = useLayoutStore()
+const moduleList = computed(() => layoutStore.modules)
+const route = useRoute()
 
 const commandMap = {
   personalInfo: () => {
@@ -22,6 +25,9 @@ const commandMap = {
 
     localStorage.removeItem('token')
     localStorage.removeItem('refresh')
+
+    layoutStore.$reset()
+
     ElMessage.info(msg)
     await router.push('/login')
   }
@@ -33,10 +39,15 @@ const handleCommand = command => {
 
 const handleSelectMenu = (key) => {
   layoutStore.activeModule = key
-  if (key === 'registration') {
-    router.push('/home')
-  } else if (key === 'record') {
-    router.push('/dashboard')
+
+  console.log(moduleList.value)
+
+  const firstMenu = layoutStore.menuList.find(
+      item => item.module === key
+  )
+
+  if (firstMenu) {
+    router.push(firstMenu.path)
   }
 }
 
@@ -44,12 +55,31 @@ const handleClickAvatar = () => {
   router.push('/me')
 }
 
-onMounted(async () => {
-  const res = await myInfo()
-
+const handleInfo = (res) => {
   const realName = res.data.realName
   username.value = res.data.username
   firstName.value = realName.charAt(0)
+}
+
+watch(
+    () => route.path,
+    (path) => {
+
+      const menu = layoutStore.menuList.find(
+          item => item.path === path
+      )
+
+      if (menu) {
+        layoutStore.activeModule = menu.module
+      }
+
+    },
+    { immediate: true }
+)
+
+onMounted(async () => {
+  const res = await myInfo()
+  handleInfo(res)
 })
 </script>
 
@@ -60,14 +90,14 @@ onMounted(async () => {
     <span class="header-title">控制台</span>
 
     <el-menu
+        v-if="moduleList.length"
         class="header-menu"
         mode="horizontal"
         :default-active="layoutStore.activeModule"
         text-color="#c4c9ce"
         active-text-color="#00B2D6"
         @select="handleSelectMenu">
-      <el-menu-item index="registration">挂号</el-menu-item>
-      <el-menu-item index="record">病历</el-menu-item>
+      <el-menu-item v-for="item in moduleList" :key="item.module" :index="item.module">{{ item.moduleName }}</el-menu-item>
     </el-menu>
   </div>
 

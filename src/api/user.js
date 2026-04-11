@@ -81,3 +81,11 @@ export function deletePatientDetail(patientId) {
         method: 'delete'
     })
 }
+
+export function listUsersByCondition(data) {
+    return request({
+        url: '/users/search',
+        method: 'post',
+        data
+    })
+}

@@ -30,14 +30,19 @@ const router = createRouter({
           component: () => import('@/views/user/PatientManage.vue')
         },
         {
-          path: 'dashboard',
-          name: 'Dashboard',
-          component: () => import('@/views/dashboard/Dashboard.vue')
+          path: 'record',
+          name: 'Record',
+          component: () => import('@/views/medical-record/MyMedicalRecord.vue')
         },
         {
           path: 'user-registration',
           name: 'UserRegistration',
           component: () => import('@/views/registration/UserRegistration.vue')
+        },
+        {
+          path: 'users',
+          name: 'Users',
+          component: () => import('@/views/user/UserManager.vue')
         }
       ],
       meta: {

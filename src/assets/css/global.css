@@ -19,6 +19,11 @@ select {
     font-family: inherit;
 }
 
+.page-header {
+    margin: 0;
+    padding: 0;
+}
+
 /* Inter Variable Font */
 @font-face {
     font-family: 'Inter';

@@ -1,6 +1,25 @@
 <script setup>
 import AppHeader from "@/views/layout/AppHeader.vue";
 import AppAside from "@/views/layout/AppAside.vue";
+import {useLayoutStore} from "@/stores/layout.js";
+import {getMenus} from "@/api/auth.js";
+import {onMounted} from "vue";
+
+const layoutStore = useLayoutStore()
+
+const loadMenus = async () => {
+
+  if (layoutStore.menuLoaded) return
+
+  const res = await getMenus()
+
+  layoutStore.setMenus(res.data)
+
+}
+
+onMounted(() => {
+  loadMenus()
+})
 </script>
 
 <template>
