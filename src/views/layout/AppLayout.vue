@@ -4,6 +4,7 @@ import AppAside from "@/views/layout/AppAside.vue";
 import {useLayoutStore} from "@/stores/layout.js";
 import {getMenus} from "@/api/auth.js";
 import {onMounted} from "vue";
+import router from "@/router/index.js";
 
 const layoutStore = useLayoutStore()
 
@@ -12,9 +13,10 @@ const loadMenus = async () => {
   if (layoutStore.menuLoaded) return
 
   const res = await getMenus()
-
-  layoutStore.setMenus(res.data)
-
+  const menus = res.data
+  layoutStore.setMenus(menus)
+  const firstMenu = menus.find(item => item.path)
+  await router.push(firstMenu.path)
 }
 
 onMounted(() => {
