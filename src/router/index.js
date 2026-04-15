@@ -43,6 +43,16 @@ const router = createRouter({
           path: 'users',
           name: 'Users',
           component: () => import('@/views/user/UserManager.vue')
+        },
+        {
+          path: 'admin/doctor-add',
+          name: 'DoctorAdd',
+          component: () => import('@/views/user/DoctorRegister.vue')
+        },
+        {
+          path: 'admin/doctor-schedule',
+          name: 'DoctorSchedule',
+          component: () => import('@/views/user/DoctorSchedule.vue')
         }
       ],
       meta: {

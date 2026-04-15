@@ -89,3 +89,11 @@ export function listUsersByCondition(data) {
         data
     })
 }
+
+export function registerDoctor(data) {
+    return request({
+        url: '/users/doctor/register',
+        method: 'post',
+        data
+    })
+}

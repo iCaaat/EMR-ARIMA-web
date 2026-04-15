@@ -2,6 +2,8 @@
 import {onMounted, ref} from "vue";
 import {listUsersByCondition} from "@/api/user.js";
 
+const loading = ref(false)
+
 const userData = ref([])
 const filter = ref({})
 
@@ -24,11 +26,13 @@ const resetFilter = () => {
   loadUsers()
 }
 const loadUsers = async () => {
+  loading.value = true
   const res = await listUsersByCondition(filter.value);
   userData.value = res.data.records
   total.value = res.data.total
   pageSize.value = res.data.size
   currentPage.value = res.data.page
+  loading.value = false
 }
 
 onMounted(() => {
@@ -54,7 +58,7 @@ onMounted(() => {
     <el-button type="primary" @click="loadUsers">搜索</el-button>
   </div>
 
-  <el-table :data="userData" style="width: 100%">
+  <el-table v-loading="loading" :data="userData" style="width: 100%">
     <el-table-column type="index" />
     <el-table-column prop="uid" label="uid" width="100" />
     <el-table-column prop="username" label="用户名" />
@@ -70,8 +74,8 @@ onMounted(() => {
 
   <div class="page-content">
     <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
+        v-model:current-page="filter.pageNum"
+        v-model:page-size="filter.pageSize"
         :page-sizes="[10, 15, 20, 50]"
         :size="'default'"
         :background="false"

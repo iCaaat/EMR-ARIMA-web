@@ -50,7 +50,7 @@ const handleSubmitLogin = async () => {
         <div class="input-group">
           <img :src="passwordIcon" alt="email-icon" class="input-icon">
           <img :src="lineIcon" alt="line-icon" class="input-line">
-          <el-input v-model="data.password" @keydown.enter="handleSubmitLogin" class="login-input" placeholder="请输入您的密码"></el-input>
+          <el-input type="password" v-model="data.password" @keydown.enter="handleSubmitLogin" class="login-input" placeholder="请输入您的密码"></el-input>
         </div>
       </el-form-item>
     </el-form>

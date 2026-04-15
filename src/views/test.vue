@@ -3,22 +3,36 @@ import { ref } from 'vue'
 import userIcon from "@/assets/icons/login_and_register/user_icon.svg";
 import lineIcon from "@/assets/icons/login_and_register/line.svg";
 
+const token = ref('')
+const setToken = () => {
+  localStorage.setItem('token', token.value)
+}
+
 const value = ref('')
 
 const data = ref({
   name: ''
 })
+
+const handleSuccess = (res) => {
+  console.log("上传成功", res)
+}
+const uploadHeaders = {
+  Authorization: "Bearer " + localStorage.getItem("token")
+}
 </script>
 
 <template>
-  <el-form>
-    <el-form-item class="login-form form1">
+  <h2 class="page-title">测试页面</h2>
+  <el-input placeholder="设置token" v-model="token"></el-input>
+  <el-button type="primary" @click="setToken">设置</el-button>
 
-      <img :src="userIcon" alt="email-icon" class="input-icon">
-      <img :src="lineIcon" alt="line-icon" class="input-line">
-      <input v-model="data.username" type="text" class="login-input" placeholder="请输入您的用户名">
-    </el-form-item>
-  </el-form>
+  <el-divider />
+
+  <el-upload :headers="uploadHeaders" action="/api/file/upload" :on-success="handleSuccess">
+    <el-button type="primary">点击上传</el-button>
+  </el-upload>
+
 </template>
 
 <style scoped>
