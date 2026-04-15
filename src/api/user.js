@@ -97,3 +97,11 @@ export function registerDoctor(data) {
         data
     })
 }
+
+export function getDoctorsSimple(data) {
+    return request({
+        url: '/users/doctor',
+        method: 'get',
+        params: data
+    })
+}

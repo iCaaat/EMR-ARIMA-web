@@ -1,9 +1,12 @@
 <script setup>
 import {onMounted, ref} from "vue"
 import {getDepartments} from "@/api/registration.js";
-import getSchedules from "@/api/schedule.js";
+
+import ScheduleDialog from "@/views/schedule/schedule-dialog/ScheduleDialog.vue";
+import {getSchedules} from "@/api/schedule.js";
 
 const loading = ref(false)
+const dialogVisible = ref(false)
 
 const departmentOptions = ref([])
 const cascaderProps = {
@@ -28,8 +31,9 @@ const filter = ref({
 })
 
 const loadData = async () => {
-  console.log(filter.value)
   loading.value = true
+  filter.value.pageNum = pageNum.value
+  filter.value.pageSize = pageSize.value
   const res = await getSchedules(filter.value)
   scheduleList.value = res.data.records
   total.value = res.data.total
@@ -55,6 +59,10 @@ const handleCurrentChange = (val) => {
   pageNum.value = val
   filter.value.pageNum = val
   loadData()
+}
+
+const handleAddScheduleDialog = () => {
+  dialogVisible.value = true
 }
 onMounted(() => {
   loadDepartments()
@@ -94,6 +102,7 @@ onMounted(() => {
     <el-button type="primary" @click="loadData">
       查询
     </el-button>
+    <el-button type="success" @click="handleAddScheduleDialog">新增排班</el-button>
   </div>
 
   <!-- 表格 -->
@@ -104,6 +113,7 @@ onMounted(() => {
         style="width: 100%"
         v-loading="loading"
     >
+      <el-table-column type="index" />
       <el-table-column
           prop="doctorName"
           label="医生"
@@ -183,8 +193,8 @@ onMounted(() => {
 
   <div class="page-content">
     <el-pagination
-        v-model:current-page="filter.pageNum"
-        v-model:page-size="filter.pageSize"
+        v-model:current-page="pageNum"
+        v-model:page-size="pageSize"
         :page-sizes="[10, 15, 20, 50]"
         :size="'default'"
         :background="false"
@@ -194,6 +204,8 @@ onMounted(() => {
         @current-change="handleCurrentChange"
     />
   </div>
+
+  <ScheduleDialog @confirm="loadData" :width="800" v-model="dialogVisible"></ScheduleDialog>
 </template>
 
 <style scoped>

@@ -52,7 +52,12 @@ const router = createRouter({
         {
           path: 'admin/doctor-schedule',
           name: 'DoctorSchedule',
-          component: () => import('@/views/user/DoctorSchedule.vue')
+          component: () => import('@/views/schedule/DoctorSchedule.vue')
+        },
+        {
+          path: 'admin/schedule-manage',
+          name: 'ScheduleManagement',
+          component: () => import('@/views/schedule/ScheduleManage.vue')
         }
       ],
       meta: {
@@ -68,6 +73,15 @@ const router = createRouter({
       path: '/register',
       name: 'RegisterLayout',
       component: () => import('../views/auth/Register.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/404'
+    },
+    {
+      path: '/404',
+      name: 'Not Found',
+      component: () => import('@/views/404.vue')
     },
     {
       path: '/test',
