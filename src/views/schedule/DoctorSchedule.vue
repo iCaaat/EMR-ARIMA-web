@@ -3,10 +3,12 @@ import {onMounted, ref} from "vue"
 import {getDepartments} from "@/api/registration.js";
 
 import ScheduleDialog from "@/views/schedule/schedule-dialog/ScheduleDialog.vue";
-import {getSchedules} from "@/api/schedule.js";
+import {deleteSchedule, getSchedules, updateSchedule} from "@/api/schedule.js";
+import {ElMessage, ElMessageBox} from "element-plus";
 
 const loading = ref(false)
 const dialogVisible = ref(false)
+const editVisible = ref(false)
 
 const departmentOptions = ref([])
 const cascaderProps = {
@@ -16,8 +18,17 @@ const cascaderProps = {
   emitPath: false,
   checkStrictly: false
 }
-// 模拟数据
 const scheduleList = ref([])
+const selectedDoctorSchedule = ref({})
+const weekOptions = [
+  { label: "周一", value: 1 },
+  { label: "周二", value: 2 },
+  { label: "周三", value: 3 },
+  { label: "周四", value: 4 },
+  { label: "周五", value: 5 },
+  { label: "周六", value: 6 },
+  { label: "周日", value: 7 }
+]
 
 // 查询条件
 const pageNum = ref(1)
@@ -63,6 +74,35 @@ const handleCurrentChange = (val) => {
 
 const handleAddScheduleDialog = () => {
   dialogVisible.value = true
+}
+const handleDeleteSchedule = (row) =>{
+  ElMessageBox.confirm('确定要删除排班：' + row.doctorName + '-' + row.workDate + '吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(async () => {
+    const res = await deleteSchedule(row.scheduleId)
+    ElMessage.success('成功删除' + res.data.scheduleResult + '条排班，' + res.data.slotResult + '条号源')
+    await loadData()
+  })
+}
+const handleEditDialog = async (row) => {
+  selectedDoctorSchedule.value = {...row}
+  editVisible.value = true
+}
+const handleEditScheduleSubmit = async () => {
+  console.log(selectedDoctorSchedule.value)
+  ElMessageBox.confirm('提交修改排班：' + selectedDoctorSchedule.value.doctorName + '-' + selectedDoctorSchedule.value.workDate + '吗？', '提示' , {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(async () => {
+    const res = await updateSchedule(selectedDoctorSchedule.value)
+    const msg = '成功更新' + res.data.scheduleResult + '条排班，删除' + res.data.slotDelete + '条号源，新增' + res.data.slotResult + '条号源'
+    ElMessage.success(msg)
+    await loadData()
+    editVisible.value = false
+  })
 }
 onMounted(() => {
   loadDepartments()
@@ -175,6 +215,7 @@ onMounted(() => {
           <el-button
               size="small"
               type="primary"
+              @click="handleEditDialog(scope.row)"
           >
             编辑
           </el-button>
@@ -182,6 +223,7 @@ onMounted(() => {
           <el-button
               size="small"
               type="danger"
+              @click="handleDeleteSchedule(scope.row)"
           >
             删除
           </el-button>
@@ -206,6 +248,54 @@ onMounted(() => {
   </div>
 
   <ScheduleDialog @confirm="loadData" :width="800" v-model="dialogVisible"></ScheduleDialog>
+
+  <el-dialog v-model="editVisible">
+    <el-card shadow="never" >
+      <template #header>
+        <span>医生信息</span>
+      </template>
+      <el-descriptions>
+        <el-descriptions-item label="医生姓名">{{ selectedDoctorSchedule.doctorName }}</el-descriptions-item>
+        <el-descriptions-item label="科室">{{ selectedDoctorSchedule.departmentName }}</el-descriptions-item>
+        <el-descriptions-item label="排班时间">{{ selectedDoctorSchedule.workDate }}</el-descriptions-item>
+      </el-descriptions>
+
+    </el-card>
+    <el-card shadow="never" class="mb20">
+      <template #header>
+        <span>排班修改</span>
+      </template>
+
+      <el-form label-width="120px">
+        <el-form-item label="上午工作时间">
+          <el-time-picker v-model="selectedDoctorSchedule.amStartTime" value-format="HH:mm:ss" placeholder="上午开始时间" /> -
+          <el-time-picker v-model="selectedDoctorSchedule.amEndTime" value-format="HH:mm:ss" placeholder="上午结束时间" />
+        </el-form-item>
+        <el-form-item label="上午工作时间">
+          <el-time-picker v-model="selectedDoctorSchedule.pmStartTime" value-format="HH:mm:ss" placeholder="下午开始时间" /> -
+          <el-time-picker v-model="selectedDoctorSchedule.pmEndTime" value-format="HH:mm:ss" placeholder="下午结束时间" />
+        </el-form-item>
+        <el-form-item label="看诊间隔">
+          <el-input-number :min="1" :max="40" v-model="selectedDoctorSchedule.intervalMinute" placeholder="请输入看诊间隔，单位分钟" />（分钟）
+        </el-form-item>
+        <el-form-item label="出诊状态">
+          <el-radio-group v-model="selectedDoctorSchedule.status">
+            <el-radio :value="0">出诊</el-radio>
+            <el-radio :value="1" style="color: var(--status-danger-color)">停诊</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+    </el-card>
+
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="editVisible = false">取消</el-button>
+        <el-button type="primary" @click="handleEditScheduleSubmit">
+          确定
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped>

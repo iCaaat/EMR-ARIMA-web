@@ -10,8 +10,23 @@ export function getSchedules(data) {
 
 export function addSchedule(data) {
     return request({
-        url: "/schedules/add",
+        url: "/schedules",
         method: "post",
+        data
+    })
+}
+
+export function deleteSchedule(scheduleId) {
+    return request({
+        url: `/schedules/${scheduleId}`,
+        method: "delete"
+    })
+}
+
+export function updateSchedule(data) {
+    return request({
+        url: '/schedules',
+        method: 'put',
         data
     })
 }
