@@ -30,3 +30,11 @@ export function updateSchedule(data) {
         data
     })
 }
+
+export function predict(data) {
+    return request({
+        url: `/python/predict`,
+        method: 'get',
+        params: data
+    })
+}
