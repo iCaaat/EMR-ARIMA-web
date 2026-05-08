@@ -7,3 +7,10 @@ export function postRecord(data) {
         data
     })
 }
+
+export function getRecord(patientId) {
+    return request({
+        url: `/medical/${patientId}`,
+        method: 'get'
+    })
+}
