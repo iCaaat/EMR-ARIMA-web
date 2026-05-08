@@ -62,7 +62,12 @@ const router = createRouter({
         {
           path: 'doctor/schedule',
           name: 'ScheduleView',
-            component: () => import('@/views/schedule/ScheduleView.vue')
+          component: () => import('@/views/schedule/ScheduleView.vue')
+        },
+        {
+          path: 'doctor/registration',
+          name: 'RegistrationManage',
+          component: () => import('@/views/registration/RegistrationManage.vue')
         }
       ],
       meta: {

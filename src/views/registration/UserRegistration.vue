@@ -63,8 +63,9 @@ onMounted(async () => {
     <el-input v-model="filter.contactPhone" placeholder="联系电话"></el-input>
     <el-select v-model="filter.status" clearable placeholder="就诊状态">
       <el-option label="未就诊" value="0" />
-      <el-option label="已就诊" value="1" />
-      <el-option label="已取消" value="2" />
+      <el-option label="就诊中" value="1" />
+      <el-option label="已完成" value="2" />
+      <el-option label="已取消" value="3" />
     </el-select>
     <el-button type="info" @click="resetFilter">重置</el-button>
     <el-button type="primary" @click="handleSearch">搜索</el-button>

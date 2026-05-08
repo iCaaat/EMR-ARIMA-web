@@ -66,3 +66,19 @@ export function getAppointments(data) {
         data
     })
 }
+
+export function listAppointments(data) {
+    return request({
+        url: '/registration/appoint/list',
+        method: 'post',
+        data
+    })
+}
+
+export function updateAppointmentStatus(appointmentId, status) {
+    return request({
+        url: `/registration/appoint/${appointmentId}/status`,
+        method: 'put',
+        params: {status: status}
+    })
+}
