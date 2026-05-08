@@ -58,6 +58,11 @@ const router = createRouter({
           path: 'admin/schedule-assist',
           name: 'ScheduleAssist',
           component: () => import('@/views/schedule/ScheduleAssist.vue')
+        },
+        {
+          path: 'doctor/schedule',
+          name: 'ScheduleView',
+            component: () => import('@/views/schedule/ScheduleView.vue')
         }
       ],
       meta: {

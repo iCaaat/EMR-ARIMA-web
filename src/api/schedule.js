@@ -38,3 +38,10 @@ export function predict(data) {
         params: data
     })
 }
+
+export function getScheduleByToken() {
+    return request({
+        url: `/schedules/doctor`,
+        method: 'get'
+    })
+}
