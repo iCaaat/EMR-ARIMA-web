@@ -44,7 +44,7 @@ const handleSubmit = async () => {
 <template>
   <div class="register-card">
     <!-- 标题 -->
-    <h2 class="card-title">2.实名认证</h2>
+    <h2 class="card-title">2.扩展信息</h2>
 
     <!-- 表单区 -->
     <el-form
