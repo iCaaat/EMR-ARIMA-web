@@ -105,3 +105,10 @@ export function getDoctorsSimple(data) {
         params: data
     })
 }
+
+export function getPatientHomeOverview() {
+    return request({
+        url: '/patients/overview',
+        method: 'get'
+    })
+}
