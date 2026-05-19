@@ -1,8 +1,9 @@
 <script setup>
 
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {getScheduleByToken} from "@/api/schedule.js";
 import {ElMessage} from "element-plus";
+import {getDepartments} from "@/api/registration.js";
 
 // 当前日历月份
 const currentDate = ref(new Date())
@@ -12,6 +13,52 @@ const scheduleList = ref([])
 
 // 按日期分组后的排班Map
 const scheduleMap = ref({})
+
+const departmentMap = ref({});
+// 把树形科室拍平成 Map
+const flattenDepartments = (departments, parentPath = "") => {
+  const map = {};
+
+  departments.forEach(item => {
+    const fullPath = parentPath
+        ? `${parentPath} / ${item.name}`
+        : item.name;
+
+    map[item.departmentId] = {
+      ...item,
+      fullPath
+    };
+
+    if (item.children && item.children.length > 0) {
+      Object.assign(map, flattenDepartments(item.children, fullPath));
+    }
+  });
+
+  return map;
+};
+// 根据科室ID获取科室名称
+const getDepartmentName = (departmentId) => {
+  return departmentMap.value[departmentId]?.fullPath || "未知科室";
+};
+
+// 卡片头展示的科室信息
+const departmentText = computed(() => {
+  const ids = [
+    ...new Set(
+        scheduleList.value
+            .map(item => item.departmentId)
+            .filter(Boolean)
+    )
+  ];
+
+  if (ids.length === 0) {
+    return "暂无科室";
+  }
+
+  return ids
+      .map(id => getDepartmentName(id))
+      .join("、");
+});
 
 const loadSchedule = async () => {
   try {
@@ -62,8 +109,14 @@ const getStatusType = (status) => {
   }
 }
 
+const loadDepartment = async () => {
+  const res = await getDepartments()
+  departmentMap.value = flattenDepartments(res.data || []);
+}
+
 onMounted(() => {
   loadSchedule()
+  loadDepartment()
 })
 </script>
 
@@ -72,6 +125,14 @@ onMounted(() => {
   <div class="schedule-page">
 
     <el-card shadow="never" class="calendar-card">
+      <template #header>
+        <div class="card-header">
+          <span class="card-title">排班日历</span>
+          <span class="department-info">
+        科室：{{ departmentText }}
+      </span>
+        </div>
+      </template>
       <el-calendar v-model="currentDate">
 
         <template #date-cell="{ data }">
@@ -193,5 +254,21 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.department-info {
+  font-size: 14px;
+  color: #606266;
 }
 </style>

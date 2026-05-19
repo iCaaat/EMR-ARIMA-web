@@ -155,7 +155,7 @@ const loadData = async () => {
     relation: item.relation,
     relationDisplay: item.relationDisplay,
     avatarUrl: 'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
-    institutionTitle: '南华附属医院',
+    institutionTitle: '附属医院',
     buttonText: '展开详细'
   }))
 }
