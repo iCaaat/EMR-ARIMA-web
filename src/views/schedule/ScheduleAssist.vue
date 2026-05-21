@@ -210,7 +210,7 @@ onMounted(()=>{
           <template v-if="model && Object.keys(model).length">
             <el-descriptions :column="1" border size="small">
               <el-descriptions-item label="模型">
-                ARIMA({{ model.p }}, {{ model.d }}, {{ model.q }})
+                SARIMA({{ model.p }}, {{ model.d }}, {{ model.q }})(1, 1, 1)<sub>7</sub>
               </el-descriptions-item>
 
               <el-descriptions-item label="RMSE">
