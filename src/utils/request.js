@@ -6,7 +6,7 @@ import {refreshToken} from "@/api/auth.js";
 // 创建实例
 const service = axios.create({
     baseURL: '/api', // 走 vite 代理
-    timeout: 10000,
+    timeout: 15000,
     withCredentials: true
 })
 
